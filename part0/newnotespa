@@ -1,0 +1,13 @@
+title: Creating New Note on SPA
+
+>browser executes event handler that adds new note to note list
+
+>browser executes event handler that re-renders note list on page
+
+>browser executes event handler that submits post request
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+>server handles post data
+
+server -> browser: HTTP RESPONSE: 201 (created)
