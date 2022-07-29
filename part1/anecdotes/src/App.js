@@ -6,11 +6,21 @@ const Button = (props) => (
   </>
 );
 
-const Anecdotes = (props) => (
+const Anecdote = (props) => (
   <>
-    <h1>Anecdote of the Day</h1>
+    <h1>{props.title}</h1>
     {props.anecdote}
     <div>Votes: {props.votes}</div>
+  </>
+);
+
+const Anecdotes = (props) => (
+  <>
+    <Anecdote
+      title="Anecdote of the Day"
+      anecdote={props.anecdote}
+      votes={props.votes}
+    />
     <Button
       text="Vote"
       handleClick={() => {
@@ -18,15 +28,13 @@ const Anecdotes = (props) => (
       }}
     />
     <Button text="Next Anecdote" handleClick={() => props.getRandomQuote()} />
-    <div>
-      <h1>Most Voted</h1>
-      {props.max && (
-        <div>
-          {props.max.anecdote}
-          <div>Votes: {props.max.points}</div>
-        </div>
-      )}
-    </div>
+    {props.max && (
+      <Anecdote
+        title="Most Voted"
+        anecdote={props.max.anecdote}
+        votes={props.max.points}
+      />
+    )}
   </>
 );
 
