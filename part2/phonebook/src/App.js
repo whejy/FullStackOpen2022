@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import phonebook from "./services/phonebook";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import SearchFilter from "./components/SearchFilter";
@@ -11,37 +12,51 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((resp) => {
-      setPersons(resp.data);
-    });
+    phonebook.getAll().then((resp) => setPersons(resp));
   }, []);
 
   const addPhone = (e) => {
     e.preventDefault();
-    if (
-      persons.findIndex(
-        (person) => person.name.toLowerCase() === newName.toLowerCase()
-      ) < 0
-    ) {
-      setPersons([...persons, { name: newName, number: newNumber }]);
+    const newPerson = { name: newName, number: newNumber };
+    const currentPersonIndex = persons.findIndex(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    if (currentPersonIndex < 0) {
+      phonebook
+        .create(newPerson)
+        .then((returnedPerson) => setPersons([...persons, returnedPerson]));
     } else {
-      alert(`${newName} already exists in the phonebook`);
+      if (
+        window.confirm(
+          `${newName} already exists in the phonebook, replace old number with a new one?`
+        )
+      ) {
+        phonebook
+          .update(persons[currentPersonIndex].id, newPerson)
+          .then((returnedPerson) =>
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            )
+          );
+      }
     }
     setNewName("");
     setNewNumber("");
   };
 
-  const handlePhoneChange = (e) => {
-    setNewName(e.target.value);
-  };
+  const handlePhoneChange = (e) => setNewName(e.target.value);
 
-  const handleNumberChange = (e) => {
-    setNewNumber(e.target.value);
-  };
+  const handleNumberChange = (e) => setNewNumber(e.target.value);
 
-  const handleFilter = (e) => {
-    setFilter(e.target.value);
-  };
+  const handleDelete = (id) =>
+    phonebook
+      .remove(id)
+      .then(setPersons(persons.filter((person) => person.id !== id)));
+
+  const handleFilter = (e) => setFilter(e.target.value);
 
   return (
     <div>
@@ -56,7 +71,7 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Persons search={filter} persons={persons} />
+      <Persons handleDelete={handleDelete} search={filter} persons={persons} />
     </div>
   );
 };
