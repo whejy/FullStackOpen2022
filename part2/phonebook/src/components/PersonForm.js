@@ -7,6 +7,7 @@ const PersonForm = ({
 }) => {
   return (
     <>
+      <h2>Add New</h2>
       <form onSubmit={onSubmit}>
         <div>
           Name: <input value={newName} onChange={phoneChange} />

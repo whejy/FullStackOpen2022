@@ -1,14 +1,8 @@
 const Person = ({ persons, handleDelete }) => {
-  const confirmDelete = (person) => {
-    if (window.confirm(`Delete entry for ${person.name}?`)) {
-      return handleDelete(person.id);
-    }
-  };
-
   return persons.map((person) => (
     <div key={person.name}>
       {person.name} {person.number}{" "}
-      <button onClick={() => confirmDelete(person)}>Delete</button>
+      <button onClick={() => handleDelete(person)}>Delete</button>
     </div>
   ));
 };
@@ -21,6 +15,7 @@ const Persons = ({ persons, search, handleDelete }) => {
   }
   return (
     <>
+      <h2>Numbers</h2>
       <Person handleDelete={handleDelete} persons={persons} />
     </>
   );
