@@ -67,10 +67,16 @@ const App = () => {
       }
     }
 
-    phonebook.create(newPerson).then((returnedPerson) => {
-      setPersons([...persons, returnedPerson]);
-      notify(`${returnedPerson.name} added`);
-    });
+    phonebook
+      .create(newPerson)
+      .then((returnedPerson) => {
+        setPersons([...persons, returnedPerson]);
+        notify(`${returnedPerson.name} added`);
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+        notify(error.response.data.error, "error");
+      });
   };
 
   const handleDelete = (person) => {

@@ -1,0 +1,31 @@
+GET http://localhost:3001/api/persons
+
+###
+GET http://localhost:3001/info
+
+###
+GET http://localhost:3001/api/persons/62fdc75d459a5cf3b2c3ef9f
+
+###
+DELETE http://localhost:3001/api/persons/62fdc42c0dc27f7605ad9c27
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Jo",
+    "number": "123"
+}
+
+###
+GET https://gentle-thicket-93618.herokuapp.com/api/persons
+
+###
+POST https://gentle-thicket-93618.herokuapp.com/api/persons/
+Content-Type: application/json
+
+{
+    "name": "Jn",
+    "number": "123"
+}
