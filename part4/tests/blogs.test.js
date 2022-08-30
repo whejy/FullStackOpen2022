@@ -52,6 +52,11 @@ const blogs = [
 ];
 
 describe('total likes', () => {
+  test('of empty list is null', () => {
+    expect(listHelper.totalLikes([])).toBe(null);
+    expect(listHelper.totalLikes(null)).toBe(null);
+  });
+
   test('when list has only one blog, equal the likes of that', () => {
     expect(listHelper.totalLikes([blogs[0]])).toBe(7);
   });
@@ -60,21 +65,64 @@ describe('total likes', () => {
     expect(listHelper.totalLikes([blogs[4]])).toBe(0);
   });
 
-  test('when list has many blogs, total likes is 36', () => {
+  test('of list with many blogs, total likes is accurate', () => {
     expect(listHelper.totalLikes(blogs)).toBe(36);
-  });
-
-  test('when list is empty, likes equals zero', () => {
-    expect(listHelper.totalLikes([])).toBe(0);
-  });
-
-  test('when null is passed to function, likes equal zero', () => {
-    expect(listHelper.totalLikes(null)).toBe(0);
   });
 });
 
 describe('favourite blog', () => {
+  test('of empty list is null', () => {
+    expect(listHelper.favouriteBlog([])).toBe(null);
+    expect(listHelper.favouriteBlog(null)).toBe(null);
+  });
+
+  test('of one is that blog', () => {
+    expect(listHelper.favouriteBlog([blogs[0]])).toEqual(blogs[0]);
+  });
+
   test('equals the blog with most likes', () => {
     expect(listHelper.favouriteBlog(blogs)).toEqual(blogs[2]);
+  });
+});
+
+describe('author with the most blogs', () => {
+  test('of empty list is null', () => {
+    expect(listHelper.mostBlogs([])).toBe(null);
+    expect(listHelper.mostBlogs(null)).toBe(null);
+  });
+
+  test('of one is one', () => {
+    expect(listHelper.mostBlogs([blogs[2]])).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1,
+    });
+  });
+
+  test('equals the author with the most blogs', () => {
+    expect(listHelper.mostBlogs(blogs)).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    });
+  });
+});
+
+describe('author with most likes', () => {
+  test('of empty list is null', () => {
+    expect(listHelper.mostLikes([])).toBe(null);
+    expect(listHelper.mostLikes(null)).toBe(null);
+  });
+
+  test('of one is the likes of that blog', () => {
+    expect(listHelper.mostLikes([blogs[0]])).toEqual({
+      author: 'Michael Chan',
+      likes: 7,
+    });
+  });
+
+  test('author with most likes across all blogs is returned', () => {
+    expect(listHelper.mostLikes(blogs)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
+    });
   });
 });
