@@ -8,8 +8,20 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "NewBlog",
-    "author": "TestGuy",
+    "title": "Invalid blog",
+    "author": "NotLoggedIn",
     "url": "www.example.com",
     "likes": 31
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzMTE4YjczN2MxNTg0ZDA1YjE2OGZkMyIsImlhdCI6MTY2MjM1NjQzNH0.gFANHzJO9cQsXc-Mm12aAH8V-JhfNtDLyvnBPA3pCW4
+
+{
+    "title": "Valid Blog",
+    "author": "LoggedIn",
+    "url": "www.example.com",
+    "likes": 13
 }
