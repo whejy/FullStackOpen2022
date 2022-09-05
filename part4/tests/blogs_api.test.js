@@ -38,8 +38,6 @@ describe('when there are some initial blogs saved', () => {
   test('blog retrieval fails with 404 if blog does not exist', async () => {
     const validNonExistingId = await helper.nonExistingId();
 
-    console.log(validNonExistingId);
-
     await api.get(`/api/blogs/${validNonExistingId}`).expect(404);
   });
 
