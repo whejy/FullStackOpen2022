@@ -15,9 +15,14 @@ Content-Type: application/json
 }
 
 ###
+DELETE http://localhost:3001/api/blogs/6316d6d699410ed3afb2ef1c
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZFVzZXIiLCJpZCI6IjYzMTZkNTJmMTQyNWU0MjE2MzAyZDQwNiIsImlhdCI6MTY2MjQ0MTE0Nn0.qiRD2mjMR9XnA3z0DpjKgMbnJ0ioiyVPrxcsgSIJvXE
+
+
+###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzMTE4YjczN2MxNTg0ZDA1YjE2OGZkMyIsImlhdCI6MTY2MjM1NjQzNH0.gFANHzJO9cQsXc-Mm12aAH8V-JhfNtDLyvnBPA3pCW4
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZFVzZXIiLCJpZCI6IjYzMTZkNTJmMTQyNWU0MjE2MzAyZDQwNiIsImlhdCI6MTY2MjQ0MTE0Nn0.qiRD2mjMR9XnA3z0DpjKgMbnJ0ioiyVPrxcsgSIJvXE
 
 {
     "title": "Valid Blog",

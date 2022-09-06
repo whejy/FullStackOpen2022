@@ -5,3 +5,12 @@ Content-Type: application/json
     "username": "root",
     "password": "tester321"
 }
+
+###
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "secondUser",
+    "password": "test321"
+}
