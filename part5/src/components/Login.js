@@ -6,6 +6,7 @@ const Login = (props) => {
           <label>
             Username
             <input
+              autoFocus
               type="text"
               value={props.username}
               name="Username"
