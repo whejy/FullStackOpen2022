@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Blog from './components/Blog';
+import Blogs from './components/Blogs';
 import Login from './components/Login';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -12,19 +12,26 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
+      blogService.getAll().then((blogs) => setBlogs(blogs));
+    }
   }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
     try {
       const user = await loginService.login({
         username,
         password,
       });
-      blogService.setToken(user.token);
-      blogService.getAll().then((blogs) => setBlogs(blogs));
+
+      window.localStorage.setItem('loggedBlogsUser', JSON.stringify(user));
+
+      // blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -36,29 +43,13 @@ const App = () => {
     }
   };
 
-  // if (user === null) {
-  //   return (
-  //     <div>
-  //       <Login
-  //         username={username}
-  //         password={password}
-  //         setUsername={setUsername}
-  //         setPassword={setPassword}
-  //         handleLogin={handleLogin}
-  //       />
-  //     </div>
-  //   );
-  // }
-
-  // return (
-  //   <div>
-  //     <h2>blogs</h2>
-  //     <i>{user.name} logged in</i>
-  //     {blogs.map((blog) => (
-  //       <Blog key={blog.id} blog={blog} />
-  //     ))}
-  //   </div>
-  // );
+  const handleLogout = async () => {
+    const loggedInUser = window.localStorage.getItem('loggedBlogsUser');
+    if (loggedInUser) {
+      window.localStorage.removeItem('loggedBlogsUser');
+      setUser(null);
+    }
+  };
 
   return (
     <div>
@@ -71,13 +62,7 @@ const App = () => {
           handleLogin={handleLogin}
         />
       ) : (
-        <div>
-          <h2>blogs</h2>
-          <i>{user.name} logged in</i>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-        </div>
+        <Blogs blogs={blogs} user={user.name} handleLogout={handleLogout} />
       )}
     </div>
   );
