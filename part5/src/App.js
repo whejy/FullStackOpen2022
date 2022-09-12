@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blogs from './components/Blogs';
 import Login from './components/Login';
 import Notification from './components/Notification';
 import NewBlogForm from './components/NewBlogForm';
-import Logout from './components/Logout';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +13,8 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser');
@@ -60,10 +62,27 @@ const App = () => {
   const createBlog = async (newBlog) => {
     try {
       const createdBlog = await blogService.createBlog(newBlog);
+      blogFormRef.current.toggleVisibility();
+
       setBlogs(blogs.concat(createdBlog));
+
       notify(`Successfully added blog - ${newBlog.title}`, 'success');
     } catch (exception) {
       notify('Please fill in empty fields', 'error');
+    }
+  };
+
+  const updateBlog = async (blog) => {
+    try {
+      const updatedBlog = await blogService.updateBlog(blog);
+
+      setBlogs(
+        blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
+      );
+
+      notify(`Successfully updated blog - ${blog.title}`, 'success');
+    } catch (exception) {
+      notify(`Could not update blog - ${blog.title}`, 'error');
     }
   };
 
@@ -81,10 +100,17 @@ const App = () => {
         />
       ) : (
         <div>
-          <i>{user.name} logged in</i>
-          <Logout handleLogout={handleLogout} />
-          <NewBlogForm createBlog={createBlog} />
-          <Blogs blogs={blogs} />
+          <p>
+            <i>{user.name} logged in </i>
+            <button onClick={handleLogout}>Logout</button>
+          </p>
+          <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
+            <NewBlogForm createBlog={createBlog} />
+          </Togglable>
+          <Blogs
+            updateBlog={updateBlog}
+            blogs={blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)}
+          />
         </div>
       )}
     </div>

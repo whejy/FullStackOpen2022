@@ -25,6 +25,7 @@ const NewBlogForm = ({ createBlog }) => {
           <label>
             Title:
             <input
+              autoFocus
               type={'text'}
               value={title}
               name="Title"
