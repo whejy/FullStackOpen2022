@@ -1,27 +1,27 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, removeBlog }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
-  const buttonLabel = visible ? 'Hide' : 'View';
+  const buttonLabel = visible ? 'Hide' : 'View'
 
-  const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser');
-  const user = JSON.parse(loggedUserJSON);
+  const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser')
+  const user = JSON.parse(loggedUserJSON)
 
   const increaseLikes = () => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
-    };
+    }
 
-    updateBlog(updatedBlog);
-  };
+    updateBlog(updatedBlog)
+  }
 
   const deleteConfirm = (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      removeBlog(blog);
+      removeBlog(blog)
     }
-  };
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -29,7 +29,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   return (
     <div style={blogStyle}>
@@ -50,7 +50,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

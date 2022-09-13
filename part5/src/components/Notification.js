@@ -1,6 +1,6 @@
 const Notification = ({ notification }) => {
   if (!notification) {
-    return null;
+    return null
   }
 
   const style = {
@@ -12,9 +12,9 @@ const Notification = ({ notification }) => {
     padding: '10px',
     marginTop: '10px',
     marginBottom: '10px',
-  };
+  }
 
-  return <div style={style}>{notification.message}</div>;
-};
+  return <div style={style}>{notification.message}</div>
+}
 
-export default Notification;
+export default Notification

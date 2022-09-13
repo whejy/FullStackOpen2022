@@ -1,4 +1,4 @@
-import Blog from './Blog';
+import Blog from './Blog'
 
 const Blogs = (props) => (
   <div>
@@ -11,6 +11,6 @@ const Blogs = (props) => (
       />
     ))}
   </div>
-);
+)
 
-export default Blogs;
+export default Blogs

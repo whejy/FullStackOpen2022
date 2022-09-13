@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const Login = (props) => {
   return (
@@ -30,8 +30,8 @@ const Login = (props) => {
         <button type="submit">Login</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
 Login.propTypes = {
   username: PropTypes.string.isRequired,
@@ -39,6 +39,6 @@ Login.propTypes = {
   setUsername: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
-};
+}
 
-export default Login;
+export default Login
