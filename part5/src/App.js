@@ -86,6 +86,16 @@ const App = () => {
     }
   };
 
+  const removeBlog = async (blogToDelete) => {
+    try {
+      await blogService.removeBlog(blogToDelete.id);
+      setBlogs(blogs.filter((blog) => blog.id !== blogToDelete.id));
+      notify('Blog removed', 'success');
+    } catch (exception) {
+      notify(`Could not remove blog - ${blogToDelete.title}`, 'error');
+    }
+  };
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -108,6 +118,7 @@ const App = () => {
             <NewBlogForm createBlog={createBlog} />
           </Togglable>
           <Blogs
+            removeBlog={removeBlog}
             updateBlog={updateBlog}
             blogs={blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)}
           />
