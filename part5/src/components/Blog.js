@@ -32,11 +32,11 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div>
         {blog.title} - {blog.author}{' '}
         <button onClick={() => setVisible(!visible)}>{buttonLabel}</button>
-        {blog.user.username === user.username && (
+        {blog.user && user && blog.user.username === user.username && (
           <button onClick={() => deleteConfirm(blog)}>Remove</button>
         )}
       </div>
