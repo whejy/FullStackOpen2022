@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
 
-describe('Testing blog component', () => {
+describe('Testing Blog component', () => {
   const blog = {
     title: 'A Test Blog',
     author: 'Mr Smith',
@@ -49,7 +49,5 @@ describe('Testing blog component', () => {
     const likeButton = screen.getByText('Like')
     await user.dblClick(likeButton)
     expect(mockUpdateBlog.mock.calls).toHaveLength(2)
-
-    screen.debug()
   })
 })
