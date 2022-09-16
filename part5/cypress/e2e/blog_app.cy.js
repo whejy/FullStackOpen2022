@@ -2,7 +2,6 @@ describe('Blog app', function () {
   beforeEach(function () {
     // Reset test DB
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    // Create new user
     const user = {
       name: 'JBrown',
       username: 'testUser',
@@ -40,6 +39,42 @@ describe('Blog app', function () {
         .and('have.css', 'color', 'rgb(255, 0, 0)')
 
       cy.get('html').should('not.contain', 'JBrown logged in')
+    })
+  })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({ username: 'testUser', password: 'test321' })
+    })
+
+    it('A new blog can be created via form', function () {
+      cy.get('#toggleButton').click()
+      cy.get('input[name="Title"]').type('A Test Blog')
+      cy.get('input[name="Author"]').type('Mr Brown')
+      cy.get('input[name="Url"]').type('www.test.com')
+
+      cy.contains('Add').click()
+
+      cy.get('#success')
+        .should('contain', 'Successfully added blog - A Test Blog')
+        .and('have.css', 'border-style', 'solid')
+        .and('have.css', 'color', 'rgb(0, 128, 0)')
+
+      cy.contains('A Test Blog - Mr Brown')
+    })
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'A Second Blog',
+          author: 'Nobody',
+          url: 'www.tester.com',
+        })
+      })
+
+      it('it can have its likes increased', function () {
+        cy.contains('A Second Blog')
+      })
     })
   })
 })
