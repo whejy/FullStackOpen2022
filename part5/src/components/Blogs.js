@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import Blog from './Blog'
 
 const Blogs = (props) => (
-  <div>
+  <div id="blogsList">
     {props.blogs.map((blog) => (
       <Blog
         key={blog.id}
