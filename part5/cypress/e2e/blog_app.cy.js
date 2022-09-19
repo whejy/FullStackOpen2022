@@ -112,7 +112,7 @@ describe('Blog app', function () {
     })
   })
 
-  describe.only('Blogs are sorted by likes', function () {
+  describe('Blogs are sorted by likes', function () {
     beforeEach(function () {
       cy.login({ username: 'testUser', password: 'test321' })
       cy.createBlog({
@@ -142,30 +142,22 @@ describe('Blog app', function () {
         .as('FirstBlog')
         .contains('View')
         .click()
-        .parent()
-        .parent()
-        .contains('Like')
-        .as('LikeFirst')
 
       cy.contains('A Second Blog')
         .parent()
         .as('SecondBlog')
         .contains('View')
         .click()
-        .parent()
-        .parent()
-        .contains('Like')
-        .as('LikeSecond')
 
       cy.contains('A Third Blog')
         .parent()
         .as('ThirdBlog')
         .contains('View')
         .click()
-        .parent()
-        .parent()
-        .contains('Like')
-        .as('LikeThird')
+
+      cy.get('@FirstBlog').contains('Like').as('LikeFirst')
+      cy.get('@SecondBlog').contains('Like').as('LikeSecond')
+      cy.get('@ThirdBlog').contains('Like').as('LikeThird')
 
       cy.get('@LikeThird').click()
       cy.wait(200)
