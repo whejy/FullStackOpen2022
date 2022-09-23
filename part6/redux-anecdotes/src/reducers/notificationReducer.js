@@ -13,7 +13,7 @@ const notificationSlice = createSlice({
 
 let timeOutId = null
 
-// Async function that creates and then clears notification
+// Async function that sets and then clears notification
 export const createNotification = (message) => {
   return async (dispatch) => {
     dispatch(setNotification(message))
