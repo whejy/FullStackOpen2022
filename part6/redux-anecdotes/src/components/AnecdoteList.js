@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { vote } from '../reducers/anecdoteReducer'
+import { initializeAnecdotes, vote } from '../reducers/anecdoteReducer'
 import { createNotification } from '../reducers/notificationReducer'
+import { useEffect } from 'react'
 
 const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch()
@@ -29,6 +30,12 @@ const AnecdoteList = () => {
         )
       : state.anecdotes
   )
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeAnecdotes)
+  }, [dispatch])
 
   const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes)
 
