@@ -8,7 +8,7 @@ const Anecdote = ({ anecdote }) => {
 
   const voteHandler = async () => {
     dispatch(voteAnecdote(anecdote))
-    dispatch(createNotification(`You voted for: ${anecdote.content}`))
+    dispatch(createNotification(`You voted for: ${anecdote.content}`, 3))
   }
 
   return (

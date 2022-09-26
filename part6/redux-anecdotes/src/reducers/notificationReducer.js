@@ -5,26 +5,25 @@ const notificationSlice = createSlice({
   initialState: null,
   reducers: {
     setNotification(state, action) {
-      const notification = action.payload
-      return notification
+      return action.payload
     },
   },
 })
 
+export const { setNotification } = notificationSlice.actions
+
 let timeOutId = null
 
 // Async function that sets and then clears notification
-export const createNotification = (message) => {
+export const createNotification = (message, time) => {
   return async (dispatch) => {
     dispatch(setNotification(message))
 
     if (timeOutId) {
       clearTimeout(timeOutId)
     }
-
-    timeOutId = setTimeout(() => dispatch(setNotification(null)), 3000)
+    timeOutId = setTimeout(() => dispatch(setNotification(null)), time * 1000)
   }
 }
 
-export const { setNotification } = notificationSlice.actions
 export default notificationSlice.reducer
