@@ -14,7 +14,7 @@ const Blogs = (props) => (
   </div>
 )
 
-Blogs.PropTypes = {
+Blogs.propTypes = {
   removeBlog: PropTypes.func.isRequired,
   updateBlog: PropTypes.func.isRequired,
   blogs: PropTypes.array.isRequired,
