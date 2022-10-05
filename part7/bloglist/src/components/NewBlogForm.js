@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
-const NewBlogForm = ({ createBlog }) => {
+const NewBlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = (event) => {
+  const createBlog = (event) => {
     event.preventDefault()
-    createBlog({
+    addBlog({
       title: title,
       author: author,
       url: url,
@@ -20,7 +20,7 @@ const NewBlogForm = ({ createBlog }) => {
   return (
     <div>
       <h2>Create Blog</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={createBlog}>
         <div>
           <label>
             Title:
