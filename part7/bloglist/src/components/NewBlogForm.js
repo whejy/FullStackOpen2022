@@ -1,17 +1,23 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 
-const NewBlogForm = ({ addBlog }) => {
+const NewBlogForm = ({ blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const createBlog = (event) => {
+  const dispatch = useDispatch()
+
+  const addBlog = (event) => {
     event.preventDefault()
-    addBlog({
+    blogFormRef.current.toggleVisibility()
+    const newBlog = {
       title: title,
       author: author,
       url: url,
-    })
+    }
+    dispatch(createBlog(newBlog))
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -20,7 +26,7 @@ const NewBlogForm = ({ addBlog }) => {
   return (
     <div>
       <h2>Create Blog</h2>
-      <form onSubmit={createBlog}>
+      <form onSubmit={addBlog}>
         <div>
           <label>
             Title:

@@ -1,26 +1,28 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addLike, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, updateBlog, removeBlog }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
 
   const buttonLabel = visible ? 'Hide' : 'View'
 
   const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser')
   const user = JSON.parse(loggedUserJSON)
 
-  const increaseLikes = () => {
+  const updateBlog = () => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
     }
-
-    updateBlog(updatedBlog)
+    dispatch(addLike(updatedBlog))
   }
 
-  const deleteConfirm = (blog) => {
+  const removeBlog = (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      removeBlog(blog)
+      dispatch(deleteBlog(blog))
     }
   }
 
@@ -38,7 +40,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
         {blog.title} - {blog.author}{' '}
         <button onClick={() => setVisible(!visible)}>{buttonLabel}</button>
         {blog.user && user && blog.user.username === user.username && (
-          <button onClick={() => deleteConfirm(blog)}>Remove</button>
+          <button onClick={() => removeBlog(blog)}>Remove</button>
         )}
       </div>
 
@@ -47,7 +49,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
           <div>{blog.url}</div>
           <div className="likesCount">
             Likes: {blog.likes}{' '}
-            <button className="likesButton" onClick={increaseLikes}>
+            <button className="likesButton" onClick={updateBlog}>
               Like
             </button>
           </div>
@@ -59,8 +61,6 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  updateBlog: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired,
 }
 
 export default Blog

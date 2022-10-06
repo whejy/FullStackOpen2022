@@ -6,9 +6,9 @@ import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
-
 import { createNotification } from './reducers/notificationReducer'
-import { initializeBlogs, createBlog } from './reducers/blogReducer'
+
+import { initializeBlogs } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
@@ -36,10 +36,6 @@ const App = () => {
     (blogA, blogB) => blogB.likes - blogA.likes
   )
 
-  const notify = (message, type = 'success') => {
-    dispatch(createNotification(message, type, 3))
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -57,47 +53,13 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      notify('Wrong credentials', 'error')
+      dispatch(createNotification('Wrong credentials', 'error'))
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogsUser')
     setUser(null)
-  }
-
-  const addBlog = async (newBlog) => {
-    try {
-      await dispatch(createBlog(newBlog))
-      blogFormRef.current.toggleVisibility()
-      notify(`Successfully added blog - ${newBlog.title}`, 'success')
-    } catch (exception) {
-      notify('Please fill in empty fields', 'error')
-    }
-  }
-
-  const updateBlog = async (blog) => {
-    try {
-      // const updatedBlog = await blogService.updateBlog(blog)
-
-      // setBlogs(
-      //   blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
-      // )
-
-      notify(`Successfully updated blog - ${blog.title}`, 'success')
-    } catch (exception) {
-      notify(`Could not update blog - ${blog.title}`, 'error')
-    }
-  }
-
-  const removeBlog = async (blogToDelete) => {
-    try {
-      await blogService.removeBlog(blogToDelete.id)
-      // setBlogs(blogs.filter((blog) => blog.id !== blogToDelete.id))
-      notify('Blog removed', 'success')
-    } catch (exception) {
-      notify(`Could not remove blog - ${blogToDelete.title}`, 'error')
-    }
   }
 
   return (
@@ -119,13 +81,9 @@ const App = () => {
             <button onClick={handleLogout}>Logout</button>
           </p>
           <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
-            <NewBlogForm addBlog={addBlog} />
+            <NewBlogForm blogFormRef={blogFormRef} />
           </Togglable>
-          <Blogs
-            removeBlog={removeBlog}
-            updateBlog={updateBlog}
-            blogs={sortedBlogs}
-          />
+          <Blogs blogs={sortedBlogs} />
         </div>
       )}
     </div>
