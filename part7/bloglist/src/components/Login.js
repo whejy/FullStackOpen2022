@@ -1,18 +1,43 @@
-import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import loginService from '../services/login'
+import { loginUser } from '../reducers/userReducer'
+import { createNotification } from '../reducers/notificationReducer'
 
-const Login = (props) => {
+const Login = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      dispatch(loginUser(user))
+
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      dispatch(createNotification('Wrong credentials', 'error'))
+    }
+  }
+
   return (
     <div>
-      <form onSubmit={props.handleLogin}>
+      <form onSubmit={handleLogin}>
         <div>
           <label>
             Username
             <input
               autoFocus
               type="text"
-              value={props.username}
+              value={username}
               name="Username"
-              onChange={({ target }) => props.setUsername(target.value)}
+              onChange={({ target }) => setUsername(target.value)}
             />
           </label>
         </div>
@@ -21,9 +46,9 @@ const Login = (props) => {
             Password
             <input
               type="password"
-              value={props.password}
+              value={password}
               name="Password"
-              onChange={({ target }) => props.setPassword(target.value)}
+              onChange={({ target }) => setPassword(target.value)}
             />
           </label>
         </div>
@@ -33,14 +58,6 @@ const Login = (props) => {
       </form>
     </div>
   )
-}
-
-Login.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  handleLogin: PropTypes.func.isRequired,
 }
 
 export default Login

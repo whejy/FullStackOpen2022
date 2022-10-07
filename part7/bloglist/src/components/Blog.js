@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addLike, deleteBlog } from '../reducers/blogReducer'
 
 const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
 
   const buttonLabel = visible ? 'Hide' : 'View'
-
-  const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser')
-  const user = JSON.parse(loggedUserJSON)
 
   const updateBlog = () => {
     const updatedBlog = {
