@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import userService from '../services/user'
 import { createNotification } from './notificationReducer'
 import loginService from '../services/login'
+import { initializeBlogs } from './blogReducer'
 
 const userSlice = createSlice({
   name: 'user',
@@ -23,8 +24,9 @@ export const loginUser = (credentials) => {
         username,
         password,
       })
-      dispatch(setUser(user))
       userService.setUser(user)
+      dispatch(setUser(user))
+      dispatch(initializeBlogs())
     } catch (exception) {
       dispatch(createNotification('Wrong credentials', 'error'))
     }

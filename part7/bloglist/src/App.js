@@ -12,12 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 const App = () => {
   const dispatch = useDispatch()
   const blogFormRef = useRef()
-  const blogs = useSelector((state) => state.blogs)
   const loggedInUser = useSelector((state) => state.user)
-
-  const sortedBlogs = [...blogs].sort(
-    (blogA, blogB) => blogB.likes - blogA.likes
-  )
 
   useEffect(() => {
     const user = userService.getUser()
@@ -46,7 +41,7 @@ const App = () => {
           <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
             <NewBlogForm blogFormRef={blogFormRef} />
           </Togglable>
-          <Blogs blogs={sortedBlogs} />
+          <Blogs />
         </div>
       )}
     </div>
