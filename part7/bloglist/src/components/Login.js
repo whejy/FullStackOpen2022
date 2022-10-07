@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import loginService from '../services/login'
+// import loginService from '../services/login'
 import { loginUser } from '../reducers/userReducer'
-import { createNotification } from '../reducers/notificationReducer'
+// import { createNotification } from '../reducers/notificationReducer'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -10,20 +10,22 @@ const Login = () => {
 
   const dispatch = useDispatch()
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      dispatch(loginUser(user))
+    dispatch(loginUser({ username, password }))
 
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      dispatch(createNotification('Wrong credentials', 'error'))
-    }
+    // try {
+    //   const user = await loginService.login({
+    //     username,
+    //     password,
+    //   })
+    //   dispatch(loginUser(user))
+
+    //   setUsername('')
+    //   setPassword('')
+    // } catch (exception) {
+    //   dispatch(createNotification('Wrong credentials', 'error'))
+    // }
   }
 
   return (

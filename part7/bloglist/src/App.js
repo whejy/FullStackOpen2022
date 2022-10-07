@@ -6,14 +6,14 @@ import NewBlogForm from './components/NewBlogForm'
 import Togglable from './components/Togglable'
 import userService from './services/user'
 import { initializeBlogs } from './reducers/blogReducer'
-import { loginUser, logoutUser } from './reducers/userReducer'
+import { logoutUser, setUser } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
   const dispatch = useDispatch()
   const blogFormRef = useRef()
-  const loggedInUser = useSelector((state) => state.user)
   const blogs = useSelector((state) => state.blogs)
+  const loggedInUser = useSelector((state) => state.user)
 
   const sortedBlogs = [...blogs].sort(
     (blogA, blogB) => blogB.likes - blogA.likes
@@ -22,10 +22,10 @@ const App = () => {
   useEffect(() => {
     const user = userService.getUser()
     if (user) {
-      dispatch(loginUser(user))
+      dispatch(setUser(user))
       dispatch(initializeBlogs())
     }
-  }, [])
+  }, [dispatch])
 
   const handleLogout = () => {
     dispatch(logoutUser())
