@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/loginReducer'
+import { Button, Form } from 'react-bootstrap'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -14,36 +15,34 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>
-            Username
-            <input
-              autoFocus
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </label>
-        </div>
-        <button id="login-button" type="submit">
-          Login
-        </button>
-      </form>
-    </div>
+    <Form onSubmit={handleLogin}>
+      <Form.Group>
+        <Form.Label>
+          Username
+          <Form.Control
+            autoFocus
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </Form.Label>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>
+          Password
+          <Form.Control
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </Form.Label>
+      </Form.Group>
+      <Button id="login-button" type="submit">
+        Login
+      </Button>
+    </Form>
   )
 }
 

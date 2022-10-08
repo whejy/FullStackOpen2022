@@ -11,6 +11,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import { logoutUser, setLogin } from './reducers/loginReducer'
 import userService from './services/user'
+import { Container, Button } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -36,17 +37,17 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <Container>
         <h2>Blogs</h2>
         <Notification />
         {loggedInUser === null ? (
           <Login />
         ) : (
           <div>
-            <p>
-              <i>{loggedInUser.name} logged in </i>
-              <button onClick={handleLogout}>Logout</button>
-            </p>
+            <i>{loggedInUser.name} logged in </i>
+            <Button variant="secondary" onClick={handleLogout}>
+              Logout
+            </Button>
             <p>
               <Link style={padding} to="/">
                 Home
@@ -64,7 +65,7 @@ const App = () => {
             </Routes>
           </div>
         )}
-      </div>
+      </Container>
     </Router>
   )
 }
