@@ -3,6 +3,7 @@ import userService from '../services/user'
 import { createNotification } from './notificationReducer'
 import loginService from '../services/login'
 import { initializeBlogs } from './blogReducer'
+import { initializeUsers } from './userReducer'
 
 const loginSlice = createSlice({
   name: 'login',
@@ -30,6 +31,7 @@ export const loginUser = (credentials) => {
       userService.setUser(user)
       dispatch(setLogin(user))
       dispatch(initializeBlogs())
+      dispatch(initializeUsers())
     } catch (exception) {
       dispatch(createNotification('Wrong credentials', 'error'))
     }
