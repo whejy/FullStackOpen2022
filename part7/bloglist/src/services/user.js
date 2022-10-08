@@ -1,3 +1,6 @@
+import axios from 'axios'
+const baseUrl = '/api/users'
+
 let token = null
 
 const setUser = (user) => {
@@ -22,4 +25,9 @@ const removeUser = () => {
   window.localStorage.removeItem('loggedBlogsUser')
 }
 
-export default { setUser, getUser, getToken, removeUser }
+const getAll = async () => {
+  const response = await axios.get(baseUrl)
+  return response.data
+}
+
+export default { setUser, getUser, getToken, removeUser, getAll }

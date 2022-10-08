@@ -1,4 +1,3 @@
-// import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
 
@@ -16,9 +15,5 @@ const Blogs = () => {
     </div>
   )
 }
-
-// Blogs.propTypes = {
-//   blogs: PropTypes.array.isRequired,
-// }
 
 export default Blogs

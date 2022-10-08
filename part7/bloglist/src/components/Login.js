@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../reducers/userReducer'
+import { loginUser } from '../reducers/loginReducer'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -8,7 +8,7 @@ const Login = () => {
 
   const dispatch = useDispatch()
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault()
     dispatch(loginUser({ username, password }))
   }
