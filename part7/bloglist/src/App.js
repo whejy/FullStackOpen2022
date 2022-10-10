@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
 import Notification from './components/Notification'
@@ -9,11 +9,12 @@ import Togglable from './components/Togglable'
 import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
+import NavBar from './components/NavBar'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
-import { logoutUser, setLogin } from './reducers/loginReducer'
+import { setLogin } from './reducers/loginReducer'
 import userService from './services/user'
-import { Container, Button } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -29,13 +30,9 @@ const App = () => {
     }
   }, [dispatch])
 
-  const handleLogout = () => {
-    dispatch(logoutUser())
-  }
-
-  const padding = {
-    padding: 5,
-  }
+  // const handleLogout = () => {
+  //   dispatch(logoutUser())
+  // }
 
   return (
     <Router>
@@ -46,18 +43,7 @@ const App = () => {
           <Login />
         ) : (
           <div>
-            <i>{loggedInUser.name} logged in </i>
-            <Button variant="secondary" onClick={handleLogout}>
-              Logout
-            </Button>
-            <p>
-              <Link style={padding} to="/">
-                Home
-              </Link>
-              <Link style={padding} to="/users">
-                Users
-              </Link>
-            </p>
+            <NavBar />
             <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
               <NewBlogForm blogFormRef={blogFormRef} />
             </Togglable>
