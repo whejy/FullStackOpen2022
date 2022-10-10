@@ -1,14 +1,19 @@
-import PropTypes from 'prop-types'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { addLike, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog }) => {
-  const [visible, setVisible] = useState(false)
+const Blog = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.login)
+  const { id } = useParams()
 
-  const buttonLabel = visible ? 'Hide' : 'View'
+  const user = useSelector((state) => state.login)
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === id)
+  )
+
+  if (!blog) {
+    return null
+  }
 
   const updateBlog = () => {
     const updatedBlog = {
@@ -24,41 +29,26 @@ const Blog = ({ blog }) => {
     }
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   return (
-    <div className="blog" style={blogStyle}>
+    <div>
       <div>
         {blog.title} - {blog.author}{' '}
-        <button onClick={() => setVisible(!visible)}>{buttonLabel}</button>
         {blog.user && user && blog.user.username === user.username && (
           <button onClick={() => removeBlog(blog)}>Remove</button>
         )}
       </div>
 
-      {visible && (
-        <div>
-          <div>{blog.url}</div>
-          <div className="likesCount">
-            Likes: {blog.likes}{' '}
-            <button className="likesButton" onClick={updateBlog}>
-              Like
-            </button>
-          </div>
+      <div>
+        <div>{blog.url}</div>
+        <div className="likesCount">
+          Likes: {blog.likes}{' '}
+          <button className="likesButton" onClick={updateBlog}>
+            Like
+          </button>
         </div>
-      )}
+      </div>
     </div>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
 }
 
 export default Blog
