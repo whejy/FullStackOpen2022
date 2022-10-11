@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { addLike, deleteBlog } from '../reducers/blogReducer'
+import Comments from './Comments'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -48,14 +49,7 @@ const Blog = () => {
           </button>
         </div>
       </div>
-      <div>
-        <strong>Comments</strong>
-        <ul>
-          {blog.comments.map((comment, i) => (
-            <li key={i}>{comment}</li>
-          ))}
-        </ul>
-      </div>
+      <Comments blog={blog} />
     </div>
   )
 }
