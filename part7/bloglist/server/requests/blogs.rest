@@ -1,9 +1,11 @@
-GET http://localhost:3001/api/blogs
+GET http://localhost:3003/api/blogs
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZFVzZXIiLCJpZCI6IjYzMTZkNTJmMTQyNWU0MjE2MzAyZDQwNiIsImlhdCI6MTY2MjQ0Mjk0N30.iiTDrL_-Qle25ryHmc2aLGg5FDzx3NlYWL8DN_eglCw
 
 
 ###
-GET http://localhost:3001/api/blogs/1
+GET http://localhost:3003/api/blogs/631ff75040dcffc46c18e12d
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZFVzZXIiLCJpZCI6IjYzMTZkNTJmMTQyNWU0MjE2MzAyZDQwNiIsImlhdCI6MTY2MjQ0Mjk0N30.iiTDrL_-Qle25ryHmc2aLGg5FDzx3NlYWL8DN_eglCw
+
 
 ###
 POST http://localhost:3001/api/blogs
@@ -22,7 +24,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY
 
 
 ###
-POST http://localhost:3001/api/blogs
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZFVzZXIiLCJpZCI6IjYzMTZkNTJmMTQyNWU0MjE2MzAyZDQwNiIsImlhdCI6MTY2MjQ0Mjk0N30.iiTDrL_-Qle25ryHmc2aLGg5FDzx3NlYWL8DN_eglCw
 
@@ -31,4 +33,13 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY
     "author": "LoggedIn",
     "url": "www.example.com",
     "likes": 3
+}
+
+###
+POST http://localhost:3003/api/blogs/631ff75040dcffc46c18e12d/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZFVzZXIiLCJpZCI6IjYzMTZkNTJmMTQyNWU0MjE2MzAyZDQwNiIsImlhdCI6MTY2MjQ0Mjk0N30.iiTDrL_-Qle25ryHmc2aLGg5FDzx3NlYWL8DN_eglCw
+
+{
+    "comment": "Comment Test23"
 }

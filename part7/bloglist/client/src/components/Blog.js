@@ -40,12 +40,21 @@ const Blog = () => {
 
       <div>
         <div>{blog.url}</div>
+        <i>Added by:</i> {blog.user.name}
         <div className="likesCount">
           Likes: {blog.likes}{' '}
           <button className="likesButton" onClick={updateBlog}>
             Like
           </button>
         </div>
+      </div>
+      <div>
+        <strong>Comments</strong>
+        <ul>
+          {blog.comments.map((comment, i) => (
+            <li key={i}>{comment}</li>
+          ))}
+        </ul>
       </div>
     </div>
   )
