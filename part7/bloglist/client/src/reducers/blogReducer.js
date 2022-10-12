@@ -59,6 +59,7 @@ export const addComment = (content) => {
     try {
       const updatedBlog = await blogService.addComment(id, comment)
       dispatch(updateBlog(updatedBlog))
+      dispatch(createNotification('Comment added!', 'success'))
     } catch (exception) {
       console.log(exception)
       dispatch(createNotification('Could not add comment', 'error'))

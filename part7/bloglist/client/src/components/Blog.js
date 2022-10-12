@@ -32,18 +32,18 @@ const Blog = () => {
 
   return (
     <div>
-      <div>
+      <div style={{ textAlign: 'center' }}>
         {blog.title} - {blog.author}{' '}
         {blog.user && user && blog.user.username === user.username && (
           <button onClick={() => removeBlog(blog)}>Remove</button>
         )}
       </div>
 
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <div>{blog.url}</div>
         <i>Added by:</i> {blog.user.name}
-        <div className="likesCount">
-          Likes: {blog.likes}{' '}
+        <div className="likesCount">Likes: {blog.likes} </div>
+        <div>
           <button className="likesButton" onClick={updateBlog}>
             Like
           </button>

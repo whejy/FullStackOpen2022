@@ -9,21 +9,24 @@ const Togglable = forwardRef((props, refs) => {
 
   const toggleVisibility = () => setVisible(!visible)
 
+  const variant = buttonLabel === 'Cancel' ? 'danger' : 'primary'
+
   useImperativeHandle(refs, () => {
     return { toggleVisibility }
   })
 
   return (
-    <div>
-      {visible && <div>{props.children}</div>}
+    <span>
       <Button
-        variant="primary"
+        className="my-3"
+        variant={variant}
         id="toggleButton"
         onClick={() => toggleVisibility()}
       >
         {buttonLabel}
       </Button>
-    </div>
+      {visible && <div>{props.children}</div>}
+    </span>
   )
 })
 

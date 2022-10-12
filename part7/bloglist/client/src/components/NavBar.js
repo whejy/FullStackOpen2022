@@ -33,7 +33,6 @@ const NavBar = () => {
           </Nav>
         </Navbar.Collapse>
         <Navbar.Brand>
-          {' '}
           <Navbar.Text>{loggedInUser.name} logged in </Navbar.Text>
           <Button variant="secondary" onClick={handleLogout}>
             Logout

@@ -14,7 +14,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import { setLogin } from './reducers/loginReducer'
 import userService from './services/user'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -30,10 +30,6 @@ const App = () => {
     }
   }, [dispatch])
 
-  // const handleLogout = () => {
-  //   dispatch(logoutUser())
-  // }
-
   return (
     <Router>
       <Container>
@@ -42,18 +38,22 @@ const App = () => {
         {loggedInUser === null ? (
           <Login />
         ) : (
-          <div>
+          <Container>
             <NavBar />
-            <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
-              <NewBlogForm blogFormRef={blogFormRef} />
-            </Togglable>
+            <Row style={{ textAlign: 'center' }}>
+              <Col>
+                <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
+                  <NewBlogForm blogFormRef={blogFormRef} />
+                </Togglable>
+              </Col>
+            </Row>
             <Routes>
               <Route path="/" element={<Blogs />} />
               <Route path="/users" element={<Users />} />
               <Route path="/users/:id" element={<User />} />
               <Route path="/blog/:id" element={<Blog />} />
-            </Routes>
-          </div>
+            </Routes>{' '}
+          </Container>
         )}
       </Container>
     </Router>
