@@ -1,15 +1,21 @@
 import { useDispatch } from 'react-redux'
-import { useState } from 'react'
 import { addComment } from '../reducers/blogReducer'
 import { Button, Form } from 'react-bootstrap'
+import { useField } from '../hooks'
 
 const Comments = ({ blog }) => {
-  const [comment, setComment] = useState('')
+  const { reset: resetComment, ...comment } = useField('text')
 
   const dispatch = useDispatch()
 
-  const handleAddComment = () => {
-    dispatch(addComment(blog.id, comment))
+  const handleAddComment = (event) => {
+    event.preventDefault()
+    const content = {
+      id: blog.id,
+      comment: comment.value,
+    }
+    dispatch(addComment(content))
+    resetComment()
   }
 
   return (
@@ -18,17 +24,18 @@ const Comments = ({ blog }) => {
         <strong>Comments</strong>
       </p>
       <Form onSubmit={handleAddComment}>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Control
+            {...comment}
+            size="sm"
             autoFocus
-            type="text"
-            value={comment}
             name="Comment"
-            onChange={({ target }) => setComment(target.value)}
-            placeholder="Add Comment..."
+            placeholder="Comment..."
           />
         </Form.Group>
-        <Button type="submit">Add Comment</Button>
+        <Button variant="primary" type="submit">
+          Add
+        </Button>
       </Form>
       <ul>
         {blog.comments.map((comment, i) => (

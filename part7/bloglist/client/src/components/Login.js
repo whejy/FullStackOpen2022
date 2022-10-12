@@ -1,17 +1,23 @@
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/loginReducer'
 import { Button, Form } from 'react-bootstrap'
+import { useField } from '../hooks'
 
 const Login = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const { reset: resetUsername, ...username } = useField('text')
+  const { reset: resetPassword, ...password } = useField('password')
 
   const dispatch = useDispatch()
 
   const handleLogin = (event) => {
     event.preventDefault()
-    dispatch(loginUser({ username, password }))
+    const credentials = {
+      username: username.value,
+      password: password.value,
+    }
+    dispatch(loginUser(credentials))
+    resetUsername()
+    resetPassword()
   }
 
   return (
@@ -19,24 +25,13 @@ const Login = () => {
       <Form.Group>
         <Form.Label>
           Username
-          <Form.Control
-            autoFocus
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          <Form.Control autoFocus {...username} name="Username" />
         </Form.Label>
       </Form.Group>
       <Form.Group>
         <Form.Label>
           Password
-          <Form.Control
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
+          <Form.Control {...password} name="Password" />
         </Form.Label>
       </Form.Group>
       <Button id="login-button" type="submit">

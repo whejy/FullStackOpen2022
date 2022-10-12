@@ -53,8 +53,9 @@ export const createBlog = (content) => {
   }
 }
 
-export const addComment = (id, comment) => {
+export const addComment = (content) => {
   return async (dispatch) => {
+    const { id, comment } = content
     try {
       const updatedBlog = await blogService.addComment(id, comment)
       dispatch(updateBlog(updatedBlog))

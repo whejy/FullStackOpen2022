@@ -1,73 +1,71 @@
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { Button, Form } from 'react-bootstrap'
+import { useField } from '../hooks'
 
 const NewBlogForm = ({ blogFormRef }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const { reset: resetTitle, ...title } = useField('')
+  const { reset: resetAuthor, ...author } = useField('')
+  const { reset: resetUrl, ...url } = useField('')
 
   const dispatch = useDispatch()
+
+  const handleReset = () => {
+    resetAuthor()
+    resetTitle()
+    resetUrl()
+  }
 
   const addBlog = (event) => {
     event.preventDefault()
     blogFormRef.current.toggleVisibility()
     const newBlog = {
-      title: title,
-      author: author,
-      url: url,
+      title: title.value,
+      author: author.value,
+      url: url.value,
     }
     dispatch(createBlog(newBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    handleReset()
   }
 
   return (
-    <Form onSubmit={addBlog}>
+    <div>
       <h2>Create Blog</h2>
-      <Form.Group>
-        <Form.Label>
-          Title:
-          <Form.Control
-            autoFocus
-            type={'text'}
-            value={title}
-            name="Title"
-            placeholder="Title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </Form.Label>
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>
-          Author:
-          <Form.Control
-            type={'text'}
-            value={author}
-            name="Author"
-            placeholder="Author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </Form.Label>
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>
-          URL:
-          <Form.Control
-            type={'text'}
-            value={url}
-            name="Url"
-            placeholder="URL"
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </Form.Label>
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Add
-      </Button>
-    </Form>
+      <Form onSubmit={addBlog}>
+        <Form.Group>
+          <Form.Label>
+            Title:
+            <Form.Control
+              autoFocus
+              {...title}
+              type={'text'}
+              name="Title"
+              placeholder="Title"
+            />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>
+            Author:
+            <Form.Control
+              type={'text'}
+              {...author}
+              name="Author"
+              placeholder="Author"
+            />
+          </Form.Label>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>
+            URL:
+            <Form.Control type={'text'} {...url} name="Url" placeholder="URL" />
+          </Form.Label>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Add
+        </Button>
+      </Form>
+    </div>
   )
 }
 
