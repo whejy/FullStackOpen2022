@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
-import Notification from './Notification'
 import { useMutation } from '@apollo/client'
 import { EDIT_AUTHOR, ALL_AUTHORS } from '../queries'
 
-const EditAuthor = () => {
+const EditAuthor = ({ authors, notify }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-  const [notification, setNotification] = useState('')
 
   const [updateAuthor, result] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      notify(error.graphQLErrors[0].message)
+    },
   })
 
   const submit = (event) => {
@@ -31,27 +32,29 @@ const EditAuthor = () => {
         notify('Successfully Updated User')
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data])
-
-  const notify = (message, type = 'success') => {
-    setNotification({ message, type })
-    setTimeout(() => {
-      setNotification(null)
-    }, 3000)
-  }
 
   return (
     <div>
       <h2>set birthyear</h2>
-      <Notification notification={notification} />
       <form onSubmit={submit}>
         <div>
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+            {authors.map((author) => (
+              <option value={author.name} key={author.id}>
+                {author.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* <div>
           name:
           <input
             value={name}
             onChange={({ target }) => setName(target.value)}
           />
-        </div>
+        </div> */}
         <div>
           born:
           <input

@@ -34,7 +34,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <NewAuthor />
+      <NewAuthor notify={props.notify} authors={authors} />
     </div>
   )
 }

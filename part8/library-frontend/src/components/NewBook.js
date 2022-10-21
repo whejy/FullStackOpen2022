@@ -20,9 +20,13 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    createBook({
-      variables: { title, author, published: parseInt(published), genres },
-    })
+    try {
+      await createBook({
+        variables: { title, author, published: parseInt(published), genres },
+      })
+    } catch (error) {
+      props.notify(error.message, 'error')
+    }
 
     setTitle('')
     setPublished('')
