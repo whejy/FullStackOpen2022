@@ -1,5 +1,22 @@
 const { ApolloServer, gql } = require('apollo-server')
+const mongoose = require('mongoose')
+const Book = require('./models/book')
+const Author = require('./models/author')
 const { v1: uuid } = require('uuid')
+require('dotenv').config()
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+console.log('connecting to', MONGODB_URI)
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 let authors = [
   {
@@ -96,7 +113,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]!
   }
@@ -107,7 +124,7 @@ const typeDefs = gql`
       author: String!
       published: Int!
       genres: [String!]!
-    ): Book
+    ): Book!
     editAuthor(name: String!, born: Int!): Author
   }
 
@@ -143,16 +160,27 @@ const resolvers = {
     allAuthors: () => authors,
   },
   Mutation: {
-    addBook: (root, args) => {
-      if (!authors.find((author) => author.name === args.author)) {
-        const newAuthor = { name: args.author, id: uuid() }
-        authors = authors.concat(newAuthor)
+    addBook: async (root, args) => {
+      let author = await Author.findOne({ name: args.author })
+
+      if (!author) {
+        author = new Author({ name: args.author, id: uuid() })
+        await author.save()
       }
 
-      const book = { ...args, id: uuid() }
-      books = books.concat(book)
+      const book = new Book({ ...args, author: author.id, id: uuid() })
+      await book.save()
+      return book.populate('author')
 
-      return book
+      // if (!authors.find((author) => author.name === args.author)) {
+      //   const newAuthor = { name: args.author, id: uuid() }
+      //   authors = authors.concat(newAuthor)
+      // }
+
+      // const book = { ...args, id: uuid() }
+      // books = books.concat(book)
+
+      // return book
     },
     editAuthor: (root, args) => {
       const authorToUpdate = authors.find((author) => author.name === args.name)
