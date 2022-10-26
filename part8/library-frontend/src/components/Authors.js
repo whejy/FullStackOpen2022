@@ -1,6 +1,6 @@
 import { ALL_AUTHORS } from '../queries'
 import { useQuery } from '@apollo/client'
-import NewAuthor from './EditAuthor'
+import EditAuthor from './EditAuthor'
 
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
@@ -34,7 +34,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <NewAuthor notify={props.notify} authors={authors} />
+      <EditAuthor notify={props.notify} authors={authors} />
     </div>
   )
 }

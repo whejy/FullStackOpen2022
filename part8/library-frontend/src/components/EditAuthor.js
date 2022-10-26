@@ -9,16 +9,25 @@ const EditAuthor = ({ authors, notify }) => {
   const [updateAuthor, result] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => {
-      notify(error.graphQLErrors[0].message)
+      const message =
+        error.graphQLErrors.length > 0
+          ? error.graphQLErrors[0].message
+          : 'Please supply a birthyear'
+
+      notify(message, 'error')
     },
   })
 
   const submit = (event) => {
     event.preventDefault()
 
-    updateAuthor({
-      variables: { name, born: parseInt(born) },
-    })
+    try {
+      updateAuthor({
+        variables: { name, born: parseInt(born) },
+      })
+    } catch (error) {
+      notify(error.graphQLErrors[0].message, 'error')
+    }
 
     setName('')
     setBorn('')
@@ -48,13 +57,6 @@ const EditAuthor = ({ authors, notify }) => {
             ))}
           </select>
         </div>
-        {/* <div>
-          name:
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div> */}
         <div>
           born:
           <input
