@@ -4,13 +4,20 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import { useApolloClient } from '@apollo/client'
+import Recommended from './components/Recommended'
+import { ALL_BOOKS } from './queries'
+import { useApolloClient, useQuery } from '@apollo/client'
 
 const App = () => {
   const [token, setToken] = useState(null)
+  const [books, setBooks] = useState([])
   const [page, setPage] = useState('authors')
   const [notification, setNotification] = useState(null)
   const client = useApolloClient()
+
+  useQuery(ALL_BOOKS, {
+    onCompleted: (data) => setBooks(data.allBooks),
+  })
 
   const notify = (message, type = 'success') => {
     setNotification({ message, type })
@@ -33,6 +40,7 @@ const App = () => {
         {token ? (
           <>
             <button onClick={() => setPage('add')}>add book</button>
+            <button onClick={() => setPage('recommended')}>recommended</button>
             <button onClick={() => logout()}>logout</button>
           </>
         ) : (
@@ -41,7 +49,12 @@ const App = () => {
       </>
       <Notification notification={notification} />
       <Authors notify={notify} show={page === 'authors'} />
-      <Books notify={notify} show={page === 'books'} />
+      <Books books={books} notify={notify} show={page === 'books'} />
+      <Recommended
+        books={books}
+        notify={notify}
+        show={page === 'recommended'}
+      />
       <NewBook setPage={setPage} notify={notify} show={page === 'add'} />
       <LoginForm
         setPage={setPage}
