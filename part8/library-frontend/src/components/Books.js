@@ -1,11 +1,24 @@
 import Genres from './Genres'
 import BooksTable from './BooksTable'
 import { useState, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from '../queries'
 
 const Books = ({ notify, books, show }) => {
   const [genres, setGenres] = useState([])
   const [genre, setGenre] = useState('')
   const [filteredBooks, setFilteredBooks] = useState(null)
+  // const [filteredBooks2, setFilteredBooks2] = useState([])
+
+  const { data } = useQuery(ALL_BOOKS, {
+    variables: { genre: genre },
+  })
+
+  useEffect(() => {
+    if (data && data.allBooks) {
+      setFilteredBooks(data.allBooks)
+    }
+  }, [data, books])
 
   useEffect(() => {
     if (books) {
@@ -21,16 +34,16 @@ const Books = ({ notify, books, show }) => {
     }
   }, [books])
 
-  useEffect(() => {
-    if (!genre) {
-      setFilteredBooks(books)
-    } else {
-      setFilteredBooks(() =>
-        books.filter((book) => book.genres.includes(genre))
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [genre, genres])
+  // useEffect(() => {
+  //   if (!genre) {
+  //     setFilteredBooks(books)
+  //   } else {
+  //     setFilteredBooks(() =>
+  //       books.filter((book) => book.genres.includes(genre))
+  //     )
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [genre, genres])
 
   if (!show) {
     return null
