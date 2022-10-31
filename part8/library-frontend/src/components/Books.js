@@ -8,7 +8,6 @@ const Books = ({ notify, books, show }) => {
   const [genres, setGenres] = useState([])
   const [genre, setGenre] = useState('')
   const [filteredBooks, setFilteredBooks] = useState(null)
-  // const [filteredBooks2, setFilteredBooks2] = useState([])
 
   const { data } = useQuery(ALL_BOOKS, {
     variables: { genre: genre },
