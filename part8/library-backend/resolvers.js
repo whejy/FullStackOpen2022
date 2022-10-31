@@ -1,3 +1,5 @@
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Book = require('./models/book')
 const Author = require('./models/author')
@@ -91,6 +93,9 @@ const resolvers = {
           invalidArgs: args,
         })
       }
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: book.populate('author') })
+
       return book.populate('author')
     },
     editAuthor: async (root, args, context) => {
@@ -117,6 +122,11 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root) => await Book.countDocuments({ author: root.id }),
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator('BOOK_ADDED'),
+    },
   },
 }
 

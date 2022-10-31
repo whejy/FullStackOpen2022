@@ -26,6 +26,10 @@ const typeDefs = gql`
     id: ID!
   }
 
+  type Subscription {
+    bookAdded: Book!
+  }
+
   type Mutation {
     addBook(
       title: String!
