@@ -8,7 +8,7 @@ const LoginForm = ({ notify, show, setToken, setPage }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onCompleted: () => {
-      setPage('authors')
+      setPage('recommended')
     },
     onError: (error) => {
       notify(error.graphQLErrors[0].message, 'error')

@@ -5,8 +5,8 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Recommended from './components/Recommended'
-import { ALL_BOOKS } from './queries'
-import { useApolloClient, useQuery } from '@apollo/client'
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -17,6 +17,13 @@ const App = () => {
 
   useQuery(ALL_BOOKS, {
     onCompleted: (data) => setBooks(data.allBooks),
+  })
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`New Book Added - ${subscriptionData.data.bookAdded.title}`)
+      // notify(`New Book Added - ${subscriptionData.data.bookAdded.title}`)
+    },
   })
 
   const notify = (message, type = 'success') => {
