@@ -6,23 +6,24 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Recommended from './components/Recommended'
 import { ALL_BOOKS, BOOK_ADDED } from './queries'
-import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
 
 const App = () => {
   const [token, setToken] = useState(null)
-  const [books, setBooks] = useState([])
   const [page, setPage] = useState('authors')
   const [notification, setNotification] = useState(null)
   const client = useApolloClient()
-
-  useQuery(ALL_BOOKS, {
-    onCompleted: (data) => setBooks(data.allBooks),
-  })
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       window.alert(`New Book Added - ${subscriptionData.data.bookAdded.title}`)
       // notify(`New Book Added - ${subscriptionData.data.bookAdded.title}`)
+
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(subscriptionData.data.bookAdded),
+        }
+      })
     },
   })
 
@@ -56,12 +57,8 @@ const App = () => {
       </>
       <Notification notification={notification} />
       <Authors notify={notify} show={page === 'authors'} />
-      <Books books={books} notify={notify} show={page === 'books'} />
-      <Recommended
-        books={books}
-        notify={notify}
-        show={page === 'recommended'}
-      />
+      <Books notify={notify} show={page === 'books'} />
+      <Recommended notify={notify} show={page === 'recommended'} />
       <NewBook setPage={setPage} notify={notify} show={page === 'add'} />
       <LoginForm
         setPage={setPage}

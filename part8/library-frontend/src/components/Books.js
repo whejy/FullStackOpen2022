@@ -1,28 +1,32 @@
 import Genres from './Genres'
 import BooksTable from './BooksTable'
 import { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
-const Books = ({ notify, books, show }) => {
+const Books = ({ show }) => {
   const [genres, setGenres] = useState([])
   const [genre, setGenre] = useState('')
   const [filteredBooks, setFilteredBooks] = useState(null)
 
-  const { data } = useQuery(ALL_BOOKS, {
+  const { data } = useQuery(ALL_BOOKS)
+
+  const [getBooksByGenre, genreResult] = useLazyQuery(ALL_BOOKS, {
     variables: { genre: genre },
   })
 
+  // Get books by selected genre
+  useEffect(() => {
+    if (genreResult.data) {
+      setFilteredBooks(genreResult.data.allBooks)
+    }
+  }, [genreResult.data])
+
+  // Get all books and genres
   useEffect(() => {
     if (data && data.allBooks) {
-      setFilteredBooks(data.allBooks)
-    }
-  }, [data, books])
-
-  useEffect(() => {
-    if (books) {
       const genres = []
-      books.forEach((book) => {
+      data.allBooks.forEach((book) => {
         if (book.genres.length > 0) {
           book.genres.forEach((genre) => {
             genres[genre] = genre
@@ -30,19 +34,14 @@ const Books = ({ notify, books, show }) => {
         }
       })
       setGenres(Object.keys(genres))
+      setFilteredBooks(data.allBooks)
     }
-  }, [books])
+  }, [data])
 
-  // useEffect(() => {
-  //   if (!genre) {
-  //     setFilteredBooks(books)
-  //   } else {
-  //     setFilteredBooks(() =>
-  //       books.filter((book) => book.genres.includes(genre))
-  //     )
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [genre, genres])
+  const handleGenre = (genre) => {
+    setGenre(genre)
+    getBooksByGenre()
+  }
 
   if (!show) {
     return null
@@ -51,7 +50,7 @@ const Books = ({ notify, books, show }) => {
   return (
     <div>
       <h2>books</h2>
-      <Genres genres={genres} setGenre={setGenre} />
+      <Genres genres={genres} setGenre={handleGenre} />
       <BooksTable books={filteredBooks} />
     </div>
   )

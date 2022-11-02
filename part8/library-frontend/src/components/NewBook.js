@@ -20,7 +20,7 @@ const NewBook = (props) => {
     //     }
     //   })
     // },
-    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+    refetchQueries: [{ query: ALL_AUTHORS }],
   })
 
   if (!props.show) {
