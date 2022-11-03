@@ -88,6 +88,13 @@ const resolvers = {
 
       try {
         await book.save()
+        const bookCount = await Book.find({
+          author: author.id,
+        }).countDocuments()
+        await Author.findOneAndUpdate(
+          { name: author.name },
+          { bookCount: bookCount }
+        )
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -119,9 +126,6 @@ const resolvers = {
       }
       return author
     },
-  },
-  Author: {
-    bookCount: async (root) => await Book.countDocuments({ author: root.id }),
   },
   Subscription: {
     bookAdded: {
