@@ -6,13 +6,12 @@ import { ALL_BOOKS } from '../queries'
 
 const Books = ({ show }) => {
   const [genres, setGenres] = useState([])
-  const [genre, setGenre] = useState('')
   const [filteredBooks, setFilteredBooks] = useState(null)
 
   const { data } = useQuery(ALL_BOOKS)
 
   const [getBooksByGenre, genreResult] = useLazyQuery(ALL_BOOKS, {
-    variables: { genre: genre },
+    fetchPolicy: 'no-cache',
   })
 
   // Get books by selected genre
@@ -39,8 +38,7 @@ const Books = ({ show }) => {
   }, [data])
 
   const handleGenre = (genre) => {
-    setGenre(genre)
-    getBooksByGenre()
+    getBooksByGenre({ variables: { genre: genre } })
   }
 
   if (!show) {

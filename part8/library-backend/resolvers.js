@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 const resolvers = {
   Query: {
-    me: (root, args, context) => {
+    me: async (root, args, context) => {
       return context.currentUser
     },
     bookCount: async () => Book.countDocuments(),
