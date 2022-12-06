@@ -38,12 +38,12 @@ function getInput(): rawValues {
 
 function parseArguments(rawTarget: string, rawHours: Array<string>): parsedValues {
     if (Number(rawTarget) <= 0) {
-        throw new Error('Target hours must be greater than zero.')
-    }
+        throw new Error('Target hours must be greater than zero.');
+    };
 
     if (rawHours.length < 1) {
-        throw new Error('Please enter at least one value for days exercised.')
-    }
+        throw new Error('Please enter at least one value for days exercised.');
+    };
 
     if (!isNaN(Number(rawTarget)) && !rawHours.some(el => isNaN(Number(el)))) {
         return {
@@ -51,9 +51,9 @@ function parseArguments(rawTarget: string, rawHours: Array<string>): parsedValue
             dailyHours: rawHours.map(el => Number(el))
         }
     } else {
-        throw new Error('Provided values are not numbers.')
+        throw new Error('Provided values are not numbers.');
     }
-}
+};
 
 
 function calculateExercises(target: number, hours: Array<number>): Result {
@@ -87,18 +87,18 @@ function calculateExercises(target: number, hours: Array<number>): Result {
         target,
         average
     }
-}
+};
 
 try {
-    const {rawTarget, rawHours} = getInput()
-    const {target, dailyHours} = parseArguments(rawTarget, rawHours)
-    console.log(calculateExercises(target, dailyHours))
+    const {rawTarget, rawHours} = getInput();
+    const {target, dailyHours} = parseArguments(rawTarget, rawHours);
+    console.log(calculateExercises(target, dailyHours));
 } catch (error: unknown) {
-    let errorMessage = 'Something went wrong.'
+    let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message
+        errorMessage += ' Error: ' + error.message;
     }
-    console.log(errorMessage)
+    console.log(errorMessage);
 }
 
-export {}
+export {};
