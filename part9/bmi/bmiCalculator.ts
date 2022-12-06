@@ -30,11 +30,13 @@ function calculateBmi(height: number, weight: number): string {
 
 try {
     const {height, weight} = parseArguments(process.argv);
-    console.log(calculateBmi(height, weight))
+    console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
     let errorMessage = 'Something went wrong.'
     if (error instanceof Error) {
         errorMessage += ' Error: ' + error.message
     }
-    console.log(errorMessage)
+    console.log(errorMessage);
 }
+
+export {calculateBmi};
