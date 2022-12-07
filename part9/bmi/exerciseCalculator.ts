@@ -1,4 +1,5 @@
-const prompt = require('prompt-sync')()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires
+const prompt = require('prompt-sync')();
 
 interface Result {
     periodLength: number;
@@ -21,10 +22,12 @@ interface parsedValues {
 }
 
 function getInput(): rawValues {
-    let rawHours = [];
+    const rawHours = [];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const rawTarget = prompt('What is your target daily hours? ');
 
     for (let i = 1; i < 100; i++) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         const input = prompt(`How many hours did you exercise on day ${i}? (Press 'enter' to exit): `);
 
         if (input) {
@@ -33,27 +36,28 @@ function getInput(): rawValues {
             break;
         }
     }
-    return {rawTarget, rawHours}
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    return {rawTarget, rawHours};
 }
 
 function parseArguments(rawTarget: string, rawHours: Array<string>): parsedValues {
     if (Number(rawTarget) <= 0) {
         throw new Error('Target hours must be greater than zero.');
-    };
+    }
 
     if (rawHours.length < 1) {
         throw new Error('Please enter at least one value for days exercised.');
-    };
+    }
 
     if (!isNaN(Number(rawTarget)) && !rawHours.some(el => isNaN(Number(el)))) {
         return {
             target: Number(rawTarget),
             dailyHours: rawHours.map(el => Number(el))
-        }
+        };
     } else {
         throw new Error('Provided values are not numbers.');
     }
-};
+}
 
 
 function calculateExercises(target: number, hours: Array<number>): Result {
@@ -86,8 +90,8 @@ function calculateExercises(target: number, hours: Array<number>): Result {
         ratingDescription,
         target,
         average
-    }
-};
+    };
+}
 
 try {
     const {rawTarget, rawHours} = getInput();
