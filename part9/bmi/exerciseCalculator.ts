@@ -17,8 +17,8 @@ interface rawValues {
 }
 
 interface parsedValues {
-    target: number;
-    dailyHours: Array<number>;
+    parsedTarget: number;
+    parsedDailyHours: Array<number>;
 }
 
 function getInput(): rawValues {
@@ -40,27 +40,31 @@ function getInput(): rawValues {
     return {rawTarget, rawHours};
 }
 
-function parseArguments(rawTarget: string, rawHours: Array<string>): parsedValues {
+export function parseArguments(rawTarget: string, rawHours: Array<string>): parsedValues {
     if (Number(rawTarget) <= 0) {
-        throw new Error('Target hours must be greater than zero.');
+        throw new Error('target hours must be positive');
     }
 
     if (rawHours.length < 1) {
-        throw new Error('Please enter at least one value for days exercised.');
+        throw new Error('parameters missing');
+    }
+
+    if (!Array.isArray(rawHours)) {
+        throw new Error('malformatted parameters');
     }
 
     if (!isNaN(Number(rawTarget)) && !rawHours.some(el => isNaN(Number(el)))) {
         return {
-            target: Number(rawTarget),
-            dailyHours: rawHours.map(el => Number(el))
+            parsedTarget: Number(rawTarget),
+            parsedDailyHours: rawHours.map(el => Number(el))
         };
     } else {
-        throw new Error('Provided values are not numbers.');
+        throw new Error('malformatted parameters');
     }
 }
 
 
-function calculateExercises(target: number, hours: Array<number>): Result {
+export function calculateExercises(target: number, hours: Array<number>): Result {
     const periodLength = hours.length;
     const trainingDays = hours.filter(x => x > 0).length;
     const success = hours.every(x => x >= target);
@@ -95,8 +99,8 @@ function calculateExercises(target: number, hours: Array<number>): Result {
 
 try {
     const {rawTarget, rawHours} = getInput();
-    const {target, dailyHours} = parseArguments(rawTarget, rawHours);
-    console.log(calculateExercises(target, dailyHours));
+    const {parsedTarget, parsedDailyHours} = parseArguments(rawTarget, rawHours);
+    console.log(calculateExercises(parsedTarget, parsedDailyHours));
 } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {
@@ -104,5 +108,3 @@ try {
     }
     console.log(errorMessage);
 }
-
-export {};
