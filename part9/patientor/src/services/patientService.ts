@@ -12,14 +12,20 @@ const getPatients = (): PublicPatient[] => {
         name,
         dateOfBirth,
         gender,
-        occupation
+        occupation,
     }));
+};
+
+const getPatient = (patientId: string): Patient | undefined => {
+    const patient = patientsData.find(patient => patient.id === patientId);
+    return patient;
 };
 
 const addPatient = (patient: NewPatient): Patient => {
     const newPatient: Patient = {
         id: id,
-        ...patient
+        ...patient,
+        entries: []
     };
 
     patients.push(newPatient);
@@ -28,5 +34,6 @@ const addPatient = (patient: NewPatient): Patient => {
 
 export default {
     getPatients,
+    getPatient,
     addPatient
 };
