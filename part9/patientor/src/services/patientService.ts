@@ -2,8 +2,6 @@ import { v1 as uuid } from 'uuid';
 import patientsData from '../../data/patients.json';
 import { Patient, PublicPatient, NewPatient } from '../types';
 
-const id = uuid();
-
 const patients: Array<Patient> = patientsData;
 
 const getPatients = (): PublicPatient[] => {
@@ -22,6 +20,7 @@ const getPatient = (patientId: string): Patient | undefined => {
 };
 
 const addPatient = (patient: NewPatient): Patient => {
+    const id = uuid();
     const newPatient: Patient = {
         id: id,
         ...patient,
