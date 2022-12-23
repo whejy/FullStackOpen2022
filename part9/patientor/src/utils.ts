@@ -1,4 +1,4 @@
-import { NewPatient, Gender } from "./types";
+import { NewPatient, Gender, Entry, EntryType } from "./types";
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -50,39 +50,20 @@ const parseGender = (gender: unknown): Gender => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// const isEntryType = (param: any): param is EntryType => {
-//     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-//     return Object.values(EntryType).includes(param);
-// };
+const isEntryType = (param: any): param is EntryType => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return Object.values(EntryType).includes(param);
+};
 
-// const parseEntryType = (entryType: unknown): EntryType => {
-//     if (!entryType || !isEntryType(entryType)) {
-//         throw new Error('Incorrect or missing entry field');
-//     }
-//     return entryType;
-// };
-
-// const parseEntries = (entry: unknown): string => {
-//     // entries.forEach(entry => {
-//     //     if (entry.type !== 'HealthCheck' || entry.type !== 'Hospital' || entry.type !== 'OccupationalHealthcare') {
-//     //         throw new Error('test');
-//     //     }
-//     // });
-//     switch (entry) {
-//         case "HealthCheck":
-//             break;
-//         case "OccupationalHealthcare":
-//             break;
-//         case "Hospital":
-//             break;
-//         default:
-//             throw new Error('Incorrect or missing entry field');
-//     }
-//     return entry;
-// };
+const parseEntryType = (entryType: unknown): EntryType => {
+    if (!entryType || !isEntryType(entryType)) {
+        throw new Error('Incorrect or missing entry field');
+    }
+    return entryType;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const toNewPatient = (object: any): NewPatient => {
+export const toNewPatient = (object: any): NewPatient => {
     const newPatient: NewPatient = {
         name: parseName(object.name),
         dateOfBirth: parseDate(object.dateOfBirth),
@@ -94,14 +75,12 @@ const toNewPatient = (object: any): NewPatient => {
     return newPatient;
 };
 
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// export const toNewEntry = (object: any): Entry => {
-//     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//     const newEntry: Entry = {
-//         ...object,
-//         type: parseEntryType(object.type),
-//     };
-//     return newEntry;
-// };
-
-export default toNewPatient;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const toNewEntry = (object: any): Entry => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const newEntry: Entry = {
+        ...object,
+        type: parseEntryType(object.type),
+    };
+    return newEntry;
+};
