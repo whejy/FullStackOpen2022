@@ -59,7 +59,13 @@ const PatientData = () => {
             <TableBody>
               <TableRow>
                 <TableCell>
-                  {patient.gender === 'male' ? <MaleIcon /> : <FemaleIcon />}
+                  {patient.gender === 'male' ? (
+                    <MaleIcon />
+                  ) : patient.gender === 'female' ? (
+                    <FemaleIcon />
+                  ) : (
+                    <span>Other</span>
+                  )}
                 </TableCell>
                 <TableCell>{patient.ssn}</TableCell>
                 <TableCell>{patient.occupation}</TableCell>
