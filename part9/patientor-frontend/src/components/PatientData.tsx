@@ -1,4 +1,5 @@
 import axios from 'axios';
+import EntryDetails from './Entries';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Patient } from '../types';
@@ -72,6 +73,16 @@ const PatientData = () => {
               </TableRow>
             </TableBody>
           </Table>
+          {patient.entries.length > 0 && (
+            <div>
+              <h2>Entries</h2>
+              {patient.entries.map((entry, i) => (
+                <div style={{ marginBottom: '20px' }} key={i}>
+                  <EntryDetails {...entry} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
