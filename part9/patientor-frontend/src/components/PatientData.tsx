@@ -1,5 +1,5 @@
 import axios from 'axios';
-import EntryDetails from './Entries';
+import EntryDetails from './EntryDetails';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Patient } from '../types';
