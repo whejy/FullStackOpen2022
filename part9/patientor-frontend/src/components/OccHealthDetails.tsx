@@ -2,7 +2,10 @@ import { OccupationalHealthcareEntry } from '../types';
 import Diagnosis from './Diagnosis';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 
-const OccHealthDetails = (entry: OccupationalHealthcareEntry) => {
+interface Props {
+  entry: OccupationalHealthcareEntry;
+}
+const OccHealthDetails = ({ entry }: Props) => {
   return (
     <>
       <div>

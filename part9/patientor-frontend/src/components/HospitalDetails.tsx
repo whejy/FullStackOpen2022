@@ -2,7 +2,11 @@ import { HospitalEntry } from '../types';
 import Diagnosis from './Diagnosis';
 import LocalHospitalRoundedIcon from '@mui/icons-material/LocalHospitalRounded';
 
-const HospitalDetails = (entry: HospitalEntry) => {
+interface Props {
+  entry: HospitalEntry;
+}
+
+const HospitalDetails = ({ entry }: Props) => {
   return (
     <>
       <div>

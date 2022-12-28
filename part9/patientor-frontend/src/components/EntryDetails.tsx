@@ -12,11 +12,11 @@ const EntryDetails = (entry: Entry) => {
 
   switch (entry.type) {
     case 'Hospital':
-      return <HospitalDetails {...entry} />;
+      return <HospitalDetails entry={entry} />;
     case 'OccupationalHealthcare':
-      return <OccHealthDetails {...entry} />;
+      return <OccHealthDetails entry={entry} />;
     case 'HealthCheck':
-      return <HealthCheckDetails {...entry} />;
+      return <HealthCheckDetails entry={entry} />;
     default:
       return assertNever(entry);
   }

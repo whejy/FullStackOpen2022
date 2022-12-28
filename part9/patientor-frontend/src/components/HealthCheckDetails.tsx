@@ -3,7 +3,11 @@ import Diagnosis from './Diagnosis';
 import MedicalInformationRoundedIcon from '@mui/icons-material/MedicalInformationRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
-const HealthCheckDetails = (entry: HealthCheckEntry) => {
+interface Props {
+  entry: HealthCheckEntry;
+}
+
+const HealthCheckDetails = ({ entry }: Props) => {
   const healthCheckColor = (rating: HealthCheckRating) => {
     switch (rating) {
       case HealthCheckRating.LowRisk:
