@@ -1,32 +1,25 @@
 import { Entry } from '../types';
-import { useStateValue } from '../state';
+import HospitalDetails from './HospitalDetails';
+import OccHealthDetails from './OccHealthDetails';
+import HealthCheckDetails from './HealthCheckDetails';
 
 const EntryDetails = (entry: Entry) => {
-  const [{ diagnoses }] = useStateValue();
-
-  const getDiagnosis = (code: string): string | undefined => {
-    const diagnosis = diagnoses.find((diagnoses) => diagnoses.code === code);
-    if (diagnosis) {
-      return diagnosis.name;
-    }
+  const assertNever = (value: never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
   };
 
-  return (
-    <div>
-      <div>{entry.date}</div>
-      <div style={{ fontStyle: 'italic' }}>{entry.description}</div>
-      {entry.diagnosisCodes && (
-        <ul>
-          {entry.diagnosisCodes.map((code, i) => (
-            <li key={i}>
-              {code}
-              <span> - {getDiagnosis(code)}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+  switch (entry.type) {
+    case 'Hospital':
+      return <HospitalDetails {...entry} />;
+    case 'OccupationalHealthcare':
+      return <OccHealthDetails {...entry} />;
+    case 'HealthCheck':
+      return <HealthCheckDetails {...entry} />;
+    default:
+      return assertNever(entry);
+  }
 };
 
 export default EntryDetails;
