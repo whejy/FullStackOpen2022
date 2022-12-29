@@ -32,10 +32,10 @@ const addPatient = (patient: NewPatient): Patient => {
 };
 
 const addEntry = (patientId: string, entry: Entry): Entry => {
-    const entryId = uuid();
+    // const entryId = uuid();
     const patient = patientsData.find(patient => patient.id === patientId);
     if (patient) {
-        patient.entries.push({...entry, id: entryId});
+        patient.entries.push({...entry});
     } else {
         throw new Error('Patient not found');
     }
