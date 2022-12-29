@@ -36,4 +36,11 @@ router.get('/:id', (req, res) => {
     }
 });
 
+router.post('/:id/entries', (req, res) => {
+    const {id} = req.params;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const entry = patientService.addEntry(id, req.body);
+    res.send(entry);
+});
+
 export default router;
