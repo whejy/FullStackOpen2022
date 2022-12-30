@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { PatientFormValues } from '../AddPatientModal/AddPatientForm';
-import AddPatientModal from '../AddPatientModal';
+import { PatientFormValues } from '../Modals/AddPatientModal/AddPatientForm';
+import AddPatientModal from '../Modals/AddPatientModal';
 import { Patient } from '../types';
 import { apiBaseUrl } from '../constants';
 import HealthRatingBar from '../components/HealthRatingBar';

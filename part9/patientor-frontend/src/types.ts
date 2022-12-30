@@ -67,3 +67,5 @@ export interface Diagnoses {
   name: string;
   latin?: string;
 }
+
+export type NewEntry = Omit<Entry, 'id'>;

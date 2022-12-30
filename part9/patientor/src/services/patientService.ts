@@ -32,7 +32,6 @@ const addPatient = (patient: NewPatient): Patient => {
 };
 
 const addEntry = (patientId: string, entry: Entry): Entry => {
-    // const entryId = uuid();
     const patient = patientsData.find(patient => patient.id === patientId);
     if (patient) {
         patient.entries.push({...entry});
