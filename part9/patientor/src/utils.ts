@@ -48,6 +48,20 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
+const parseCodes = (codes: unknown): string[] | undefined => {
+    const parsedCodes: string[] = [];
+    if (codes && Array.isArray(codes)) {
+        codes.forEach(code => {
+            if (!isString(code)) {
+                throw new Error(`Incorrect Diagnosis Code: ${code}. Codes must be strings.`);
+            }
+            parsedCodes.push(code);
+        });
+        return parsedCodes;
+    }
+    return;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const parseSickLeave = (leave: any): {startDate: string, endDate: string} | undefined => {
     if (leave) {
@@ -97,6 +111,7 @@ export const toNewEntry = (object: any): Entry => {
         description: parseString("Entry Description", object.description),
         date: parseDate("Entry Date", object.date) ,
         specialist: parseString("Entry Specialist", object.specialist),
+        diagnosisCodes: parseCodes(object.diagnosisCodes)
     };
 
     const id = uuid();
