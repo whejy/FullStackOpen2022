@@ -35,6 +35,7 @@ export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = 'Field is required';
+        const formatError = 'Invalid format';
         const errors: { [field: string]: string } = {};
         if (!values.name) {
           errors.name = requiredError;
@@ -44,6 +45,9 @@ export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
         }
         if (!values.dateOfBirth) {
           errors.dateOfBirth = requiredError;
+        }
+        if (!/^\d{4}-\d{2}-\d{2}$/gm.test(values.dateOfBirth)) {
+          errors.dateOfBirth = formatError;
         }
         if (!values.occupation) {
           errors.occupation = requiredError;

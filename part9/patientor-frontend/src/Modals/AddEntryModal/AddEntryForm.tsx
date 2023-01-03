@@ -38,12 +38,16 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = 'Field is required';
+        const formatError = 'Invalid format';
         const errors: { [field: string]: string } = {};
         if (!values.description) {
           errors.description = requiredError;
         }
         if (!values.date) {
           errors.date = requiredError;
+        }
+        if (!/^\d{4}-\d{2}-\d{2}$/gm.test(values.date)) {
+          errors.date = formatError;
         }
         if (!values.specialist) {
           errors.specialist = requiredError;
