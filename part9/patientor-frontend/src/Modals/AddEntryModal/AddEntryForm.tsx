@@ -7,10 +7,10 @@ import {
   DiagnosisSelection,
   HealthCheckOption,
 } from '../FormField';
-import { HealthCheckRating, NewEntry } from '../../types';
+import { HealthCheckRating, HealthCheckEntry } from '../../types';
 import { useStateValue } from '../../state';
 
-export type EntryFormValues = NewEntry;
+export type EntryFormValues = Omit<HealthCheckEntry, 'id'>;
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
@@ -33,6 +33,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         description: '',
         date: '',
         specialist: '',
+        healthCheckRating: HealthCheckRating.Healthy,
       }}
       onSubmit={onSubmit}
       validate={(values) => {

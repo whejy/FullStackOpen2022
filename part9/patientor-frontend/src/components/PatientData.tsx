@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
 import EntryDetails from './EntryDetails';
 import { useParams } from 'react-router-dom';
@@ -15,6 +14,7 @@ import {
   Table,
   TableRow,
   TableBody,
+  Divider,
 } from '@material-ui/core';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -42,7 +42,8 @@ const PatientData = () => {
           `${apiBaseUrl}/patients/${id}/entries`,
           values
         );
-        dispatch(addEntry(id, newEntry));
+        dispatch(addEntry(newEntry));
+        closeModal();
       } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
           console.error(e?.response?.data || 'Unrecognized axios error');
@@ -73,7 +74,7 @@ const PatientData = () => {
     if (!patient || patient.id !== id) {
       void getPatient();
     }
-  }, [id]);
+  }, [id, patient]);
 
   return (
     <div>
@@ -127,6 +128,7 @@ const PatientData = () => {
               {patient.entries.map((entry, i) => (
                 <div style={{ marginBottom: '20px' }} key={i}>
                   <EntryDetails {...entry} />
+                  <Divider style={{ marginTop: '20px' }} />
                 </div>
               ))}
             </div>
