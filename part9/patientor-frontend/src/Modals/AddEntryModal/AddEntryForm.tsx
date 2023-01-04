@@ -6,8 +6,9 @@ import {
   SelectField,
   DiagnosisSelection,
   HealthCheckOption,
+  EntryTypeOption,
 } from '../FormField';
-import { HealthCheckRating, HealthCheckEntry } from '../../types';
+import { HealthCheckRating, HealthCheckEntry, EntryType } from '../../types';
 import { useStateValue } from '../../state';
 
 export type EntryFormValues = Omit<HealthCheckEntry, 'id'>;
@@ -24,6 +25,65 @@ const healthCheckOptions: HealthCheckOption[] = [
   { value: HealthCheckRating.CriticalRisk, label: 'Critical Risk' },
 ];
 
+const entryTypeOptions: EntryTypeOption[] = [
+  { value: EntryType.HealthCheck, label: 'Health Check' },
+  { value: EntryType.Hospital, label: 'Hospital' },
+  { value: EntryType.OccupationalHealthcare, label: 'Occupational Healthcare' },
+];
+
+const additionalFields = (type: string) => {
+  switch (type) {
+    case 'HealthCheck':
+      return (
+        <SelectField
+          label="Health Check Rating"
+          name="healthCheckRating"
+          options={healthCheckOptions}
+        />
+      );
+    case 'OccupationalHealthcare':
+      return (
+        <>
+          <Field
+            label="Employer Name"
+            placeholder="Employer"
+            name="employer"
+            component={TextField}
+          />
+          <Field
+            label="Sick Leave Start"
+            placeholder="YYYY-MM-DD"
+            name="sickLeave.startDate"
+            component={TextField}
+          />
+          <Field
+            label="Sick Leave End"
+            placeholder="YYYY-MM-DD"
+            name="sickLeave.endDate"
+            component={TextField}
+          />
+        </>
+      );
+    case 'Hospital':
+      return (
+        <>
+          <Field
+            label="Discharge Date"
+            placeholder="YYYY-MM-DD"
+            name="discharge.date"
+            component={TextField}
+          />
+          <Field
+            label="Discharge Criteria"
+            placeholder="Criteria"
+            name="discharge.criteria"
+            component={TextField}
+          />
+        </>
+      );
+  }
+};
+
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
   return (
@@ -38,7 +98,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = 'Field is required';
-        const formatError = 'Invalid format';
+        const formatError = 'Incorrect format';
         const errors: { [field: string]: string } = {};
         if (!values.description) {
           errors.description = requiredError;
@@ -55,9 +115,14 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         return errors;
       }}
     >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
         return (
           <Form className="form ui">
+            <SelectField
+              label="Entry Type"
+              name="type"
+              options={entryTypeOptions}
+            />
             <Field
               label="Description"
               placeholder="Description"
@@ -81,11 +146,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
-            <SelectField
-              label="Health Check Rating"
-              name="healthCheckRating"
-              options={healthCheckOptions}
-            />
+            {additionalFields(values.type)}
             <Grid>
               <Grid item>
                 <Button
