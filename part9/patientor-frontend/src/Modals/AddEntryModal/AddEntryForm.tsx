@@ -8,10 +8,13 @@ import {
   HealthCheckOption,
   EntryTypeOption,
 } from '../FormField';
-import { HealthCheckRating, HealthCheckEntry, EntryType } from '../../types';
+import { HealthCheckRating, Entry, EntryType } from '../../types';
 import { useStateValue } from '../../state';
 
-export type EntryFormValues = Omit<HealthCheckEntry, 'id'>;
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+export type EntryFormValues = UnionOmit<Entry, 'id'>;
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
@@ -81,21 +84,60 @@ const additionalFields = (type: string) => {
           />
         </>
       );
+    default:
+      break;
   }
 };
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
+
+  //   const baseInitValues = {
+  //     description: '',
+  //     date: '',
+  //     specialist: '',
+  //   };
+
+  //   const occupationalInitValues = {
+  //     ...baseInitValues,
+  //     type: 'OccupationalHealthcare' as const,
+  //     employerName: '',
+  //     sickLeave: { startDate: '', endDate: '' },
+  //   };
+
+  //   const hospitalInitValues = {
+  //     ...baseInitValues,
+  //     type: 'Hospital' as const,
+  //     discharge: { date: '', criteria: '' },
+  //   };
+  //   const healthInitValues = {
+  //     ...baseInitValues,
+  //     type: 'HealthCheck' as const,
+  //     healthCheckRating: HealthCheckRating.Healthy as const,
+  //   };
+
+  //   const initialValues = () => {
+  //     switch (formType) {
+  //       case 'OccupationalHealthcare':
+  //         return occupationalInitValues;
+  //       case 'Hospital':
+  //         return hospitalInitValues;
+  //       default:
+  //         return healthInitValues;
+  //     }
+  //   };
+
   return (
     <Formik
       initialValues={{
-        type: 'HealthCheck',
         description: '',
         date: '',
         specialist: '',
+        type: 'HealthCheck',
         healthCheckRating: HealthCheckRating.Healthy,
       }}
       onSubmit={onSubmit}
+      enableReinitialize
       validate={(values) => {
         const requiredError = 'Field is required';
         const formatError = 'Incorrect format';
