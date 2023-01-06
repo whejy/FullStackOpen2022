@@ -1,7 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Divider } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import AddEntryFormWrapper from './AddEntryFormWrapper';
-import { EntryFormValues } from './AddEntryForm';
+import AddEntryForm, { EntryFormValues } from './AddEntryForm';
 
 interface Props {
   modalOpen: boolean;
@@ -16,7 +15,7 @@ const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
     <Divider />
     <DialogContent>
       {error && <Alert severity="error">{`Error: ${error}`}</Alert>}
-      <AddEntryFormWrapper onSubmit={onSubmit} onCancel={onClose} />
+      <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
     </DialogContent>
   </Dialog>
 );

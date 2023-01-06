@@ -8,13 +8,21 @@ import {
   HealthCheckOption,
   EntryTypeOption,
 } from '../FormField';
-import { HealthCheckRating, Entry, EntryType } from '../../types';
+import {
+  HealthCheckRating,
+  Entry,
+  EntryType,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+  HealthCheckEntry,
+} from '../../types';
 import { useStateValue } from '../../state';
 
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown
-  ? Omit<T, K>
-  : never;
-export type EntryFormValues = UnionOmit<Entry, 'id'>;
+export interface EntryFormValues
+  extends Omit<Entry, 'id'>,
+    Omit<HospitalEntry, 'type' | 'id'>,
+    Omit<OccupationalHealthcareEntry, 'type' | 'id'>,
+    Omit<HealthCheckEntry, 'type' | 'id'> {}
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
@@ -34,107 +42,19 @@ const entryTypeOptions: EntryTypeOption[] = [
   { value: EntryType.OccupationalHealthcare, label: 'Occupational Healthcare' },
 ];
 
-const additionalFields = (type: string) => {
-  switch (type) {
-    case 'HealthCheck':
-      return (
-        <SelectField
-          label="Health Check Rating"
-          name="healthCheckRating"
-          options={healthCheckOptions}
-        />
-      );
-    case 'OccupationalHealthcare':
-      return (
-        <>
-          <Field
-            label="Employer Name"
-            placeholder="Employer"
-            name="employer"
-            component={TextField}
-          />
-          <Field
-            label="Sick Leave Start"
-            placeholder="YYYY-MM-DD"
-            name="sickLeave.startDate"
-            component={TextField}
-          />
-          <Field
-            label="Sick Leave End"
-            placeholder="YYYY-MM-DD"
-            name="sickLeave.endDate"
-            component={TextField}
-          />
-        </>
-      );
-    case 'Hospital':
-      return (
-        <>
-          <Field
-            label="Discharge Date"
-            placeholder="YYYY-MM-DD"
-            name="discharge.date"
-            component={TextField}
-          />
-          <Field
-            label="Discharge Criteria"
-            placeholder="Criteria"
-            name="discharge.criteria"
-            component={TextField}
-          />
-        </>
-      );
-    default:
-      break;
-  }
-};
-
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
-
-  //   const baseInitValues = {
-  //     description: '',
-  //     date: '',
-  //     specialist: '',
-  //   };
-
-  //   const occupationalInitValues = {
-  //     ...baseInitValues,
-  //     type: 'OccupationalHealthcare' as const,
-  //     employerName: '',
-  //     sickLeave: { startDate: '', endDate: '' },
-  //   };
-
-  //   const hospitalInitValues = {
-  //     ...baseInitValues,
-  //     type: 'Hospital' as const,
-  //     discharge: { date: '', criteria: '' },
-  //   };
-  //   const healthInitValues = {
-  //     ...baseInitValues,
-  //     type: 'HealthCheck' as const,
-  //     healthCheckRating: HealthCheckRating.Healthy as const,
-  //   };
-
-  //   const initialValues = () => {
-  //     switch (formType) {
-  //       case 'OccupationalHealthcare':
-  //         return occupationalInitValues;
-  //       case 'Hospital':
-  //         return hospitalInitValues;
-  //       default:
-  //         return healthInitValues;
-  //     }
-  //   };
-
   return (
     <Formik
       initialValues={{
         description: '',
         date: '',
         specialist: '',
-        type: 'HealthCheck',
+        type: EntryType.HealthCheck,
         healthCheckRating: HealthCheckRating.Healthy,
+        employerName: '',
+        sickLeave: { startDate: '', endDate: '' },
+        discharge: { date: '', criteria: '' },
       }}
       onSubmit={onSubmit}
       enableReinitialize
@@ -188,7 +108,55 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
-            {additionalFields(values.type)}
+
+            {values.type === 'HealthCheck' && (
+              <SelectField
+                label="Health Check Rating"
+                name="healthCheckRating"
+                options={healthCheckOptions}
+              />
+            )}
+
+            {values.type === 'OccupationalHealthcare' && (
+              <>
+                <Field
+                  label="Employer Name"
+                  placeholder="Employer"
+                  name="employerName"
+                  component={TextField}
+                />
+                <Field
+                  label="Sick Leave Start"
+                  placeholder="YYYY-MM-DD"
+                  name="sickLeave.startDate"
+                  component={TextField}
+                />
+                <Field
+                  label="Sick Leave End"
+                  placeholder="YYYY-MM-DD"
+                  name="sickLeave.endDate"
+                  component={TextField}
+                />
+              </>
+            )}
+
+            {values.type === 'Hospital' && (
+              <>
+                <Field
+                  label="Discharge Date"
+                  placeholder="YYYY-MM-DD"
+                  name="discharge.date"
+                  component={TextField}
+                />
+                <Field
+                  label="Discharge Criteria"
+                  placeholder="Criteria"
+                  name="discharge.criteria"
+                  component={TextField}
+                />
+              </>
+            )}
+
             <Grid>
               <Grid item>
                 <Button
