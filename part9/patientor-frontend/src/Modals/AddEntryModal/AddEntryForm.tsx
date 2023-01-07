@@ -1,5 +1,5 @@
 import { Grid, Button } from '@material-ui/core';
-import { Field, Formik, Form } from 'formik';
+import { Field, Formik, Form, FormikErrors } from 'formik';
 
 import {
   TextField,
@@ -18,6 +18,7 @@ import {
 } from '../../types';
 import { useStateValue } from '../../state';
 
+// Create a union of all entry types and their properties
 export interface EntryFormValues
   extends Omit<Entry, 'id'>,
     Omit<HospitalEntry, 'type' | 'id'>,
@@ -58,21 +59,84 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       }}
       onSubmit={onSubmit}
       enableReinitialize
-      validate={(values) => {
+      validate={(values: EntryFormValues) => {
+        const parseDate = (date: string) => {
+          return /^\d{4}-\d{2}-\d{2}$/gm.test(date);
+        };
+
         const requiredError = 'Field is required';
         const formatError = 'Incorrect format';
-        const errors: { [field: string]: string } = {};
+        const valueError = 'Invalid value';
+        let errors: FormikErrors<EntryFormValues> = {};
+
         if (!values.description) {
           errors.description = requiredError;
         }
         if (!values.date) {
           errors.date = requiredError;
         }
-        if (!/^\d{4}-\d{2}-\d{2}$/gm.test(values.date)) {
+        if (values.date && !parseDate(values.date)) {
           errors.date = formatError;
         }
         if (!values.specialist) {
           errors.specialist = requiredError;
+        }
+        if (values.type === EntryType.HealthCheck) {
+          if (!values.healthCheckRating) {
+            errors.healthCheckRating = requiredError;
+          }
+          if (
+            values.healthCheckRating < HealthCheckRating.Healthy ||
+            values.healthCheckRating > HealthCheckRating.CriticalRisk
+          ) {
+            errors.healthCheckRating = valueError;
+          }
+        }
+        if (values.type === EntryType.OccupationalHealthcare) {
+          if (!values.employerName) {
+            errors.employerName = requiredError;
+          }
+
+          //   The following validation is invalid as 'sickLeave' is an optional type. Leaving for now.
+
+          //     if (values.sickLeave && values.sickLeave.startDate) {
+          //       if (!parseDate(values.sickLeave.startDate)) {
+          //         errors = {...errors,
+          //           sickLeave: {
+          //             startDate: formatError,
+          //           },
+          //         };
+          //       }
+          //     }
+          //     if (values.sickLeave?.endDate) {
+          //       if (!parseDate(values.sickLeave?.endDate)) {
+          //         errors = {
+          //           sickLeave: {
+          //             endDate: formatError,
+          //           },
+          //         };
+          //       }
+          //     }
+        }
+        if (values.type === EntryType.Hospital) {
+          if (!values.discharge.date) {
+            errors = {
+              ...errors,
+              discharge: { ...errors.discharge, date: requiredError },
+            };
+          }
+          if (values.discharge.date && !parseDate(values.discharge.date)) {
+            errors = {
+              ...errors,
+              discharge: { ...errors.discharge, date: formatError },
+            };
+          }
+          if (!values.discharge.criteria) {
+            errors = {
+              ...errors,
+              discharge: { ...errors.discharge, criteria: requiredError },
+            };
+          }
         }
         return errors;
       }}
@@ -109,7 +173,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               diagnoses={Object.values(diagnoses)}
             />
 
-            {values.type === 'HealthCheck' && (
+            {values.type === EntryType.HealthCheck && (
               <SelectField
                 label="Health Check Rating"
                 name="healthCheckRating"
@@ -117,7 +181,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               />
             )}
 
-            {values.type === 'OccupationalHealthcare' && (
+            {values.type === EntryType.OccupationalHealthcare && (
               <>
                 <Field
                   label="Employer Name"
@@ -140,7 +204,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               </>
             )}
 
-            {values.type === 'Hospital' && (
+            {values.type === EntryType.Hospital && (
               <>
                 <Field
                   label="Discharge Date"
