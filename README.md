@@ -76,7 +76,9 @@ Learn React, Redux, Node.js, MongoDB, GraphQL, TypeScript, React Native, GitHub 
 - Typing the express app
 - React with types
 
-### [Part 10 - React Native](https://fullstackopen.com/en/part10)
+### [Part 10 - React Native](https://fullstackopen.com/en/part10)\
+[My repo](https://github.com/whejy/rate-repository-app)
+
 
 - Introduction to React Native
 - React Native basics
